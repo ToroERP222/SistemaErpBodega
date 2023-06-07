@@ -673,232 +673,231 @@ const Accor = () => {
   </>)
 }
 //remision
-const CrearRemision = ({user}) =>{  
-  const [prdlen, setPrdlen] = useState(0)
- 
+const CrearRemision = ({ user }) => {
+  const [prdlen, setPrdlen] = useState(0);
 
   const Rcliente = () => {
-    const [isLoading, setLoading] = useState(false)
-    const [clientes, setclientes] = useState([{nombreCliente:'',canal:'',productos:[]}])
-    const [isproducto, setisproducto] = useState(false)
-    const [isclient, setisclient] = useState(false)
-    const [producto, setproducto] = useState(null)
-    const [canal, setcanal] = useState(null)
-    const getclients = async () => {
-      const res = await fetch(`http://${process.env.IP}:5000/api/v1/cliente`)
-      const dta = await res.json() 
-      const crdta = dta.data
-      console.log(crdta)
-      return setclientes(crdta)
-    }
+    const [isLoading, setLoading] = useState(false);
+    const [clientes, setClientes] = useState([{ nombreCliente: '', canal: '', productos: [] }]);
+    const [isProducto, setIsProducto] = useState(false);
+    const [isClient, setIsClient] = useState(false);
+    const [producto, setProducto] = useState(null);
+    const [canal, setCanal] = useState(null);
+
+    const getClients = async () => {
+      const res = await fetch(`http://${process.env.IP}:5000/api/v1/cliente`);
+      const dta = await res.json();
+      const crdta = dta.data;
+      console.log(crdta);
+      setClientes(crdta);
+    };
+
     useEffect(() => {
-      getclients()
-    
-      
-    }, [])
-      let count=1
-      const onchangehandler = (e) => {  
-      setisproducto(true)
-      setproducto(e.target.value)   
-      
-      }
-      const onchangehandlercanal = (e) => {
-        setcanal(e.target.value)
-        setisclient(true)
-        setisproducto(true)
-        
-        
-        
-        }
-      
-      
-      return(
+      getClients();
+    }, []);
+
+    let count = 1;
+
+    const onChangeHandler = (e) => {
+      setIsProducto(true);
+      setProducto(e.target.value);
+    };
+
+    const onChangeHandlerCanal = (e) => {
+      setCanal(e.target.value);
+      setIsClient(true);
+      setIsProducto(true);
+    };
+
+    return (
+      <>
+        <h2 className='text-center text-dark'>Datos</h2>
+        <Form.Group className='mb-3' name='nombretienda'>
+          <Form.Label className='text-dark'>Canal</Form.Label>
+          <Form.Select onChange={onChangeHandlerCanal} id='canal'>
+            <option>-</option>
+            <option>Autoservicio</option>
+            <option>Horeca</option>
+          </Form.Select>
+        </Form.Group>
+        {isClient && (
           <>
-          <h2 className='text-center text-dark'>Datos</h2>
-          <Form.Group className="mb-3" name='nombretienda' >
-              <Form.Label className='text-dark' >Canal</Form.Label>
-              <Form.Select onChange={onchangehandlercanal} id='canal' >
-                <option>-</option>
-               <option>Autoservicio</option>
-               <option>Horeca</option>
-              </Form.Select>
-              </Form.Group>
-              {isclient && (<>
-                <Form.Group className="mb-3" name='nombretienda' >
-              <Form.Label className='text-dark' >Nombre Cliente</Form.Label>
-              <Form.Select onChange={ onchangehandler} id='nombreCliente' >
+            <Form.Group className='mb-3' name='nombretienda'>
+              <Form.Label className='text-dark'>Nombre Cliente</Form.Label>
+              <Form.Select onChange={onChangeHandler} id='nombreCliente'>
                 <option>-</option>
                 {clientes.map((t) => {
                   if (canal === t.canal) {
-                    return(<option  key='-'>{t.nombreCliente}</option>)
+                    return <option key='-'>{t.nombreCliente}</option>;
                   }
-                  
                 })}
               </Form.Select>
-              </Form.Group>
-              </>)}
-            
-                {isproducto && (<>
-                  <Form.Group className="mb-3" controlId="formBasicEmail" >
-       <Form.Label className='text-dark'>Numero Remision</Form.Label>
-       <Form.Control type="Text" placeholder="Remision" controlId='numero' id='numeroRemision' />
-       <Form.Text className="text-muted">
-           Numero de remision
-       </Form.Text>
-     </Form.Group>
-     <Form.Group className="mb-3">
-         <Form.Label className='text-dark'>Fecha</Form.Label>
-         <Form.Control type="date" placeholder="Fecha" controlId='fecha' id='fechaRemision'/>
-         <Form.Text className="text-muted">
-             Fecha Liquidacion
-           </Form.Text>
-       </Form.Group>
-       <Form.Group className="mb-3">
-         <Form.Label className='text-dark' >Folio Liquidación</Form.Label>
-         <Form.Control type="text" placeholder="Folio Liquidacion" controlId='folio'id='folioLiquidacion'/>
-       </Form.Group>
-                {clientes.map((p) => {
-                  setPrdlen(p.productos.length-1)
-
-                  if ( p.nombreCliente === producto) return(<>
-                 <span className='text-dark'>RFC: </span> <h5 id='rfc' className='text-dark'>{p.razonSocial}</h5>
-                 <br/>
-                  <h2 className='text-center text-dark'>Productos</h2>   
-                  {p.productos.map(d => {
-                    return(<>
-                    {d != null ?(<><Form.Group className="mb-3">
-     
-     <Form.Label className='text-dark ' id= {`prodn${count}`}>{d.nombre}</Form.Label>
-   
-
-     <Form.Control type="Text" placeholder='Cantidad'  controlId='cantidad' id={`cantidad${d.nombre}`} />
-     <Form.Text className='text-white' type='text' controlId='precio' id= {`precio${d.nombre}`}>{p.precio}</Form.Text>
-     <br/>
-     <Form.Text className='text-white' controlId='codigoBarras' id= {`codigoBarras${count}`}>{p.codigoBarras}</Form.Text>
-</Form.Group>
-{count= count+1}
-</>) :(<></>)}
-                    </>)
-                  })}
-  
-  }
-  <Button  onClick={() =>handleSubmit(clientes)}> Crear</Button>
-  </>)
-                  
-                })}
-                </>)}
+            </Form.Group>
           </>
-      )
-}
+        )}
 
-const [onClient, setonClient] = useState(true)
-const [dataC, setdataC] = useState(null)
-const handleSubmit = async (c) => {
-  // Stop the form from submitting and refreshing the page.
+        {isProducto && (
+          <>
+            <Form.Group className='mb-3' controlId='formBasicEmail'>
+              <Form.Label className='text-dark'>Numero Remision</Form.Label>
+              <Form.Control type='Text' placeholder='Remision' controlId='numero' id='numeroRemision' />
+              <Form.Text className='text-muted'>Numero de remision</Form.Text>
+            </Form.Group>
+            <Form.Group className='mb-3'>
+              <Form.Label className='text-dark'>Fecha</Form.Label>
+              <Form.Control type='date' placeholder='Fecha' controlId='fecha' id='fechaRemision' />
+              <Form.Text className='text-muted'>Fecha Liquidacion</Form.Text>
+            </Form.Group>
+            <Form.Group className='mb-3'>
+              <Form.Label className='text-dark'>Folio Liquidación</Form.Label>
+              <Form.Control type='text' placeholder='Folio Liquidacion' controlId='folio' id='folioLiquidacion' />
+            </Form.Group>
+            {clientes.map((p) => {
+              setPrdlen(p.productos.length - 1);
+              if (p.nombreCliente === producto) {
+                return (
+                  <>
+                    <span className='text-dark'>RFC: </span>
+                    <h5 id='rfc' className='text-dark'>
+                      {p.razonSocial}
+                    </h5>
+                    <br />
+                    <h2 className='text-center text-dark'>Productos</h2>
+                    {p.productos.map((d) => {
+                      return (
+                        <>
+                          {d != null ? (
+                            <>
+                              <Form.Group className='mb-3'>
+                                <Form.Label className='text-dark' id={`prodn${count}`}>
+                                  {d.nombre}
+                                </Form.Label>
+                                <Form.Control
+                                  type='Text'
+                                  placeholder='Cantidad'
+                                  controlId='cantidad'
+                                  id={`cantidad${d.nombre}`}
+                                />
+                                <Form.Text className='text-white' type='text' controlId='precio' id={`precio${d.nombre}`}>
+                                  {p.precio}
+                                </Form.Text>
+                                <br />
+                                <Form.Text className='text-white' controlId='codigoBarras' id={`codigoBarras${count}`}>
+                                  {p.codigoBarras}
+                                </Form.Text>
+                              </Form.Group>
+                              {count++}
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </>
+                      );
+                    })}
+                  </>
+                );
+              }
+            })}
+            <Button onClick={() => handleSubmit(clientes)}>Crear</Button>
+          </>
+        )}
+      </>
+    );
+  };
 
-  
-  let prod =[]
-  // Get data from the form.
-  var importe = 0
-  c.map(d => {
-    d.productos.map( p => {
-     if(p !=null){
-      let preciof = parseFloat(p.precio).toFixed(2)
-      let cantidadF = parseInt(document.getElementById(`cantidad${p.nombre}`).value)
-      let result = preciof * cantidadF
-  
-       prod.push({nombreProducto:p.nombre,cantidad:cantidadF,precioUnitario:preciof,codigoBarras:p.codigoBarras,importe:result})
-     }
-  
-    })
-  })
-  console.log(prod)
-   
-   
+  const [onClient, setOnClient] = useState(true);
+  const [dataC, setDataC] = useState(null);
 
-    
-  
-    
-    
-    
-    
+  const handleSubmit = async (c) => {
+    // Stop the form from submitting and refreshing the page.
+    let prod = [];
 
+    // Get data from the form.
+    var importe = 0;
+    c.map((d) => {
+      d.productos.map((p) => {
+        if (p != null) {
+          let preciof = parseFloat(p.precio).toFixed(2);
+          let cantidadF = parseInt(document.getElementById(`cantidad${p.nombre}`).value);
+          let result = preciof * cantidadF;
 
-  let sub = lodash.sumBy(prod, (o) => {
-    return parseFloat(o.importe)
-  })
+          prod.push({
+            nombreProducto: p.nombre,
+            cantidad: cantidadF,
+            precioUnitario: preciof,
+            codigoBarras: p.codigoBarras,
+            importe: result,
+          });
+        }
+      });
+    });
 
-  console.log(sub)
+    console.log(prod);
 
-  
-  const data = {
-    numeroRemision:document.getElementById('numeroRemision').value,
-    rfc:document.getElementById('rfc').innerHTML,
-    fechaRemision:document.getElementById('fechaRemision').value,
-    folioLiquidacion:document.getElementById('folioLiquidacion').value,
-    nombreCliente:document.getElementById('nombreCliente').value,
-    
-    productos: prod,
-    subtotal:parseFloat(sub).toFixed(2),
+    let sub = lodash.sumBy(prod, (o) => {
+      return parseFloat(o.importe);
+    });
 
-    
-}
+    console.log(sub);
 
+    const data = {
+      numeroRemision: document.getElementById('numeroRemision').value,
+      rfc: document.getElementById('rfc').innerHTML,
+      fechaRemision: document.getElementById('fechaRemision').value,
+      folioLiquidacion: document.getElementById('folioLiquidacion').value,
+      nombreCliente: document.getElementById('nombreCliente').value,
+      productos: prod,
+      subtotal: parseFloat(sub).toFixed(2),
+    };
 
-  console.log(data)
+    console.log(data);
 
+    setDataC(data);
+    setOnClient(false);
+  };
 
-  setdataC(data)
-  //const resp = await axios.post(`http://${process.env.IP}:5000/api/v1/remision/crear`,data)
-  
-  
-  
-  return setonClient(false)
+  const RenderPDF = ({ data }) => {
+    const refpdf = React.useRef();
 
-}
-const RenderPDF = ({data}) => {
-  const refpdf = React.useRef()
-  return(<>
+    return (
+      <>
+        <Row>
+          <Col>
+            <br />
+            <div style={{ width: 720, height: 4500 }} ref={refpdf} className='mt-5'>
+              <Pdf
+                numero={data.numeroRemision}
+                fecha={data.fechaRemision}
+                cliente={data.nombreCliente}
+                rfc={data.rfc}
+                productos={data.productos}
+                subtotal={data.subtotal}
+              />
+            </div>
+          </Col>
+          <Col>
+            <ReactPDF targetRef={refpdf} filename={`remision${data.numeroRemision}.pdf`}>
+              {({ toPdf }) => <Button onClick={toPdf} type='button'>Generate Pdf</Button>}
+            </ReactPDF>
+          </Col>
+        </Row>
+      </>
+    );
+  };
 
-  
-    
-   <Row><Col>
-   <br/>
-   <div style={{width: 720, height:4500 }} ref={refpdf} className='mt-5'>
-        <Pdf  
-        numero={data.numeroRemision}
-        fecha={data.fechaRemision}
-        cliente={data.nombreCliente}
-        rfc={data.rfc}
-        productos={data.productos}
-        subtotal={data.subtotal}
-        />
-        
-    </div></Col><Col> <ReactPDF targetRef={refpdf} filename={`remision${data.numeroRemision}.pdf`}>
-      {({ toPdf }) => <Button onClick={toPdf} type='button'>Generate Pdf</Button>}
-  </ReactPDF></Col></Row>
-    </>)
-}
-
-
-return(<>
-  <Container>
-    <Row>
-    <Form onSubmit={handleSubmit}>
-     
-
-     
-     
-      {onClient && ( <Rcliente/>)}
-      {!onClient && (<RenderPDF data={dataC}/>)}
-
-      
-  
-   </Form>
-    </Row>
-  </Container>
-  </>)
-}
+  return (
+    <>
+      <Container>
+        <Row>
+          <Form onSubmit={handleSubmit}>
+            {onClient && <Rcliente />}
+            {!onClient && <RenderPDF data={dataC} />}
+          </Form>
+        </Row>
+      </Container>
+    </>
+  );
+};
 const VerRemisionD = () => {
   const initialState = {
     numeroRemision:"",

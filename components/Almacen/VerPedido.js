@@ -173,14 +173,14 @@ console.log(resp)
           <tr>
             
             
-            <td key='-' id={d.TDA}>{d.TDA}</td>
+            <td key={d.TDA} id={d.TDA}>{d.TDA}</td>
   
-            <td key='-' id={`total${d.TDA}`}>{d.totalPedido}</td>
+            <td key={d.TDA} id={`total${d.TDA}`}>{d.totalPedido}</td>
             <td><Form.Select id={`fechaE${d.TDA}`}>
               <option>-</option>
               {d.fecha.map((f)=> {
                 return(
-                <option>{days[f.dia]}</option>)
+                <option key={f.dia}>{days[f.dia]}</option>)
               })}
               </Form.Select></td>
             {d.productos.map(p => {
@@ -193,7 +193,7 @@ console.log(resp)
              <Form.Select id={`usuario${d.TDA}`}>
              {users.map(u => {
                return(<>
-                <option>{u}</option>
+                <option key={u}>{u}</option>
                </>)
              })}
              </Form.Select>

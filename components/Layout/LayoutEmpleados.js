@@ -385,7 +385,7 @@ console.log(updatePedido)
             <option>-</option>
             {d.fecha.map((f)=> {
               return(
-              <option>{days[f.dia]}</option>)
+              <option key={f.dia}>{days[f.dia]}</option>)
             })}
             </Form.Select></td>
           {d.productos.map(p => {
@@ -398,7 +398,7 @@ console.log(updatePedido)
            <Form.Select id={`usuario${d.TDA}`}>
            {users.map(u => {
              return(<>
-              <option>{u}</option>
+              <option key={u}>{u}</option>
              </>)
            })}
            </Form.Select>
