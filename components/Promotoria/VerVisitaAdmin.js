@@ -17,9 +17,9 @@ export default function VerVisitaAdmin({user})  {
 
   const fetchdta = async (d) => {
     var result = [];
-    const resp = await fetch(`http://${process.env.IP}:5000/api/v1/promotor/visita/${d}`)
+    const resp = await fetch(`http://${process.env.IP}:5000/api/v1/promotor/visitas`)
     const dtajson = await resp.json()
-    const crdta = dtajson.data
+    const crdta = dtajson.data.reverse()
      return setdta(crdta);  
       
   }
@@ -33,16 +33,10 @@ export default function VerVisitaAdmin({user})  {
 
   useEffect(() => {
     fetchptda()
-  
+    fetchdta()
   
   }, [])
-  
-  const handlesbmt = async (e) => {
-    e.preventDefault()  
-    var fechaRemision=  document.getElementById(`fechaRemision`).value
-    fetchdta(fechaRemision)
-    
-  }
+
   const updVisita = async (e) => {
    let est =  document.getElementById(`estatus`).value
   
@@ -58,14 +52,9 @@ export default function VerVisitaAdmin({user})  {
 
   }
   return(<>
-  <Form onSubmit={handlesbmt} >
-  <Form.Group className="mb-3">
-     <Form.Label >Fecha</Form.Label>
-     <Form.Control type="date" placeholder="Fecha" id='fechaRemision'/>
-     <Form.Text className="text-muted">
-         Fecha Liquidacion
-       </Form.Text>
-   </Form.Group>
+  <Form  >
+
+
   
  <div><Table striped bordered hover responsive><thead>
     <tr>

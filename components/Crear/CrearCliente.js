@@ -81,7 +81,7 @@ export default function CrearCliente({user})  {
     }
     console.log(data)
     const resp = await axios.post(`http://${process.env.IP}:5000/api/v1/cliente/crear`,data)
-    setSubmitted(true);
+    alert('Cliente Agregado')
 
   }
 return (

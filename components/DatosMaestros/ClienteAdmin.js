@@ -156,7 +156,7 @@ export default function ClienteAdmin(user) {
         <Form.Select onChange={handlecanal}>
           <option>-</option>
           <option>Autoservicio</option>
-          <option>Horeca</option>
+          <option>HORECA</option>
         </Form.Select>
 
         </Form.Group>

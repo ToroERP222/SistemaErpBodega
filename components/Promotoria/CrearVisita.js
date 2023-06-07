@@ -127,9 +127,11 @@ export default function CrearVisita({user}){
           )
       }
       const [image, setimage] = useState(null)
+      const [imageA, setimageA] = useState(false)
       const  imagesmbt = (e) => {
         console.log(e.target.files)
         setimage(e.target.files[0])
+        setimageA(true)
       }
       const handleSubmit = async (e) => {
         console.log(prdlen)
@@ -255,56 +257,59 @@ export default function CrearVisita({user}){
       <Row>
       <Col>
       <Form onSubmit={handleSubmit}>
-     
-        <Rtienda/>
-      
-        <Form.Group className="mb-3" >
-        <Form.Label className='text-dark' >Nombre Promotor</Form.Label>
-        <Form.Control value={user}   name='nombreP'/>
-        <Form.Text className="text-muted">
-          
-        </Form.Text>
-      </Form.Group>
-        
-        <Form.Group className="mb-3">
-            <Form.Label className='text-dark' >Fecha</Form.Label>
-            <Form.Control type="date" placeholder="Fecha" name='fecha'/>
-            <Form.Text className="text-muted">
-              Fecha Visita
-              </Form.Text>
-          </Form.Group>
-          <Form.Group className="mb-3" >
-          <Form.Label className='text-dark'>Observaciones</Form.Label>
-          <Form.Control type="Text" placeholder="Observaciones" name='observaciones'/>
-          <Form.Text>Observaciones</Form.Text>
-  
-        </Form.Group>
-        <Form.Group className="mb-3" >
-                  <Form.Label className='text-dark'>Rotacion</Form.Label>
-                  <Form.Select  name='rotacion' >
-                    <option name='canal'>0%</option>
-                    <option name='canal'>10%</option>
-                    <option name='canal'>20%</option>
-                    <option name='canal'>30%</option>
-                    <option name='canal'>40%</option>
-                    <option name='canal'>50%</option>
-                    <option name='canal'>60%</option>
-                    <option name='canal'>70%</option>
-                    <option name='canal'>80%</option>
-                    <option name='canal'>90%</option>
-                    <option name='canal'>100%</option>
-                  </Form.Select>
-  
-                  </Form.Group>
-                  <Form.Group controlId="formFileSm" className="mb-3">
+      <Form.Group controlId="formFileSm" className="mb-3">
           <Form.Label className='text-dark'>Imagen</Form.Label>
           <Form.Control type="file" size="sm" name='img' onChange={imagesmbt}/>
         </Form.Group>
-        <h2 className='text-dark text-center'>Productos</h2>
-        <Render/>
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
+        {imageA && (<>
+          <Rtienda/>
+      
+      <Form.Group className="mb-3" >
+      <Form.Label className='text-dark' >Nombre Promotor</Form.Label>
+      <Form.Control value={user}   name='nombreP'/>
+      <Form.Text className="text-muted">
+        
+      </Form.Text>
+    </Form.Group>
+      
+      <Form.Group className="mb-3">
+          <Form.Label className='text-dark' >Fecha</Form.Label>
+          <Form.Control type="date" placeholder="Fecha" name='fecha'/>
+          <Form.Text className="text-muted">
+            Fecha Visita
+            </Form.Text>
+        </Form.Group>
+        <Form.Group className="mb-3" >
+        <Form.Label className='text-dark'>Observaciones</Form.Label>
+        <Form.Control type="Text" placeholder="Observaciones" name='observaciones'/>
+        <Form.Text>Observaciones</Form.Text>
+
+      </Form.Group>
+      <Form.Group className="mb-3" >
+                <Form.Label className='text-dark'>Rotacion</Form.Label>
+                <Form.Select  name='rotacion' >
+                  <option name='canal'>0%</option>
+                  <option name='canal'>10%</option>
+                  <option name='canal'>20%</option>
+                  <option name='canal'>30%</option>
+                  <option name='canal'>40%</option>
+                  <option name='canal'>50%</option>
+                  <option name='canal'>60%</option>
+                  <option name='canal'>70%</option>
+                  <option name='canal'>80%</option>
+                  <option name='canal'>90%</option>
+                  <option name='canal'>100%</option>
+                </Form.Select>
+
+                </Form.Group>
+               
+      <h2 className='text-dark text-center'>Productos</h2>
+      <Render/>
+      <Button variant="primary" type="submit">
+        Submit
+      </Button>
+        </>)}
+       
       </Form>
       
       </Col>
