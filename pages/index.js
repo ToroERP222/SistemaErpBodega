@@ -119,7 +119,7 @@ Home.getInitialProps = async ({ req }) => {
 
   return { data: result }
   }else{
-    return {data:null}
+    return {data:result}
   }
 
 }
