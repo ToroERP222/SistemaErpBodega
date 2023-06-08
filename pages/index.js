@@ -12,7 +12,7 @@ import Login from './login'
 
 import Layout from '../components/Layout'
 import LayoutE from '../components/Layout/LayoutEmpleados'
-export default function Home({data}) {
+export default function Home() {
   const [user, setUser] = useState(null);
   const [data, setData] = useState(null);
 
