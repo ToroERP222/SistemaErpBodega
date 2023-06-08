@@ -32,6 +32,7 @@ export default function Login() {
         }
         if (data && data.token) {
           //set cookie
+          console.log(data)
           cookie.set('token', data.token, {expires: 2});
           Router.push('/');
           Router.reload();
