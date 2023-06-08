@@ -8,7 +8,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 
 import Login from './login';
-
+    
 import Layout from '../components/Layout';
 import LayoutE from '../components/Layout/LayoutEmpleados';
 
