@@ -19,12 +19,12 @@ export default function Home({data}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${process.env.IP}/api/v1/auth/me`, {
+        const response = await fetch(`${process.env.IP}/api/v1/auth/me`,{
+          method: 'GET',
           headers: {
-            withCredentials: true, // Replace 'cookieName' with the actual name of your cookie
-          },
-        });
-
+            cookie: cookie.get('token')
+        }
+        })
         const json = await response.json();
         const jsonData = json.data;
         if (jsonData[0] === undefined) {
