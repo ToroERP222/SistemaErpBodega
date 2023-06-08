@@ -15,106 +15,64 @@ import LayoutE from '../components/Layout/LayoutEmpleados'
 export default function Home({data}) {
   const [user, setuser] = useState(null)
   const [data, setdata] = useState(null)
-  const getData
-    console.log(data)
-    useEffect(() => {
-      if (data[0]=== undefined) {
-        return(    <div  style={{height: '100vh',
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${process.env.IP}/api/v1/auth/me`, {
+          headers: {
+            Cookie: cookie.get('cookieName'), // Replace 'cookieName' with the actual name of your cookie
+          },
+        });
+
+        const json = await response.json();
+        const jsonData = json.data;
+        if (jsonData[0] === undefined) {
+          // User not logged in
+          return(    <div  style={{height: '100vh',
         position: 'relative',
         backgroundSize: 'cover',
         backgroundImage: `url('/backg.jpg')`}}>
           <Login/>
         </div>)
-    
+        }
+
+        setUser(jsonData[0].nombre);
+        setData(jsonData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+    console.log(data)
   
-  
-      
-    }else{
-      setuser(data[0].nombre)
-    }
-    
-      
-    }, [data])
     
    
 
  
 
-     const [info, setinfo] = useState({})
-      let vendedor;
-      let admin
-      let promotor;
-      let almacen;
-      let init = false
-      if(data[0] != undefined){
-        if(data[0].role === 'vendedor'){
-        vendedor= true
-        init = true
-      }else if(data[0].role === 'admin'||'distribuidor'||'almacen'){
-        admin = true
-        init = true
-      }else if(data[0].role === 'promotor'){
-        promotor = true
-        init = true
-      }
-    }
-      
-      
-    
-      
-
-  return (
-    <div  style={{height: '100vh',
-      position: 'relative',
-      backgroundSize: 'cover',
-      backgroundImage: `url('/backg.jpg')`}}>
-       
-     <div>
-      <Head>
-        <title>Comercialización</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
-      {!init && (
-        <><Login/></>
-      )}
-      {admin && (
-        <>
-          <Layout user={user}/>
-        </>
-      )}
-      { vendedor && (
-        <>
-          <LayoutE user={user}/>
-        </>
-      )}
-       { promotor && (
-        <>
-          <Layout/>
-        </>
-      )}
-
-    </div>
-    </div>
-  )
-}
-Home.getInitialProps = async (ctx) => {
-  const cookie = ctx.req ? ctx.req.headers.cookie : null
-  var result = [];
-
+    return (
+      <div
+        style={{
+          height: '100vh',
+          position: 'relative',
+          backgroundSize: 'cover',
+          backgroundImage: `url('/backg.jpg')`,
+        }}
+      >
+        <div>
+          <Head>
+            <title>Comercialización</title>
+            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+          </Head>
+          {!data && <Login />}
+          {data && data[0].role === 'admin' && <Layout user={user} />}
+          {data && data[0].role === 'vendedor' && <LayoutE user={user} />}
+          {data && data[0].role === 'promotor' && <Layout />}
+        </div>
+      </div>
+    );
   
-    const data =await fetch(`${process.env.IP}/api/v1/auth/me`,{
-      method: 'GET',
-      headers: {
-        cookie
-    }
-    })
-   
-
-  const json = await data.json()
-  
-  const jsondta = json.data
-  for(var i in jsondta)
-    result.push(jsondta [i])
-
-  return { data: result }
 }
+
