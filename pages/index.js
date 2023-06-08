@@ -97,16 +97,19 @@ export default function Home({data}) {
 }
 Home.getInitialProps = async ({ req }) => {
   const result = [];
+  let token = null;
   if (req && req.headers && req.headers.cookie) {
     const cookies = req.headers.cookie.split(';');
     const tokenCookie = cookies.find((cookie) => cookie.trim().startsWith('token'));
-
+    if (tokenCookie) {
+      token = tokenCookie.split('=')[1];
+    }
    console.log(tokenCookie)
   }
 
 
   
-    const data =await fetch(`${process.env.IP}/api/v1/auth/me?token=${cookie.token}`,{
+    const data =await fetch(`${process.env.IP}/api/v1/auth/me?token=${token}`,{
       method: 'GET'
    
     })
@@ -120,3 +123,4 @@ Home.getInitialProps = async ({ req }) => {
 
   return { data: result }
 }
+
