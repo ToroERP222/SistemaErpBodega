@@ -12,29 +12,28 @@ import Login from './login'
 
 import Layout from '../components/Layout'
 import LayoutE from '../components/Layout/LayoutEmpleados'
-export default function Home() {
-  const [user, setuser] = useState(null)
-  const [data, setdata] = useState(null)
+export default function Home({data}) {
+  const [user, setUser] = useState(null);
+  const [data, setData] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
-      console.log(cookie.get('token'))
       try {
         const response = await axios.get(`${process.env.IP}/api/v1/auth/me`, {
           headers: {
-            Cookie: cookie.get('token'), // Replace 'cookieName' with the actual name of your cookie
+            cookie: cookie.get('token'), // Replace 'cookieName' with the actual name of your cookie
           },
         });
 
         const json = await response.json();
         const jsonData = json.data;
         if (jsonData[0] === undefined) {
-          // User not logged in
           return(    <div  style={{height: '100vh',
-        position: 'relative',
-        backgroundSize: 'cover',
-        backgroundImage: `url('/backg.jpg')`}}>
-          <Login/>
-        </div>)
+          position: 'relative',
+          backgroundSize: 'cover',
+          backgroundImage: `url('/backg.jpg')`}}>
+            <Login/>
+          </div>)
         }
 
         setUser(jsonData[0].nombre);
@@ -46,34 +45,32 @@ export default function Home() {
 
     fetchData();
   }, []);
-    console.log(data)
-  
-    
+
+ 
    
 
  
 
-    return (
-      <div
-        style={{
-          height: '100vh',
-          position: 'relative',
-          backgroundSize: 'cover',
-          backgroundImage: `url('/backg.jpg')`,
-        }}
-      >
-        <div>
-          <Head>
-            <title>Comercialización</title>
-            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-          </Head>
-          {!data && <Login />}
-          {data && data[0].role === 'admin' && <Layout user={user} />}
-          {data && data[0].role === 'vendedor' && <LayoutE user={user} />}
-          {data && data[0].role === 'promotor' && <Layout />}
-        </div>
+  return (
+    <div
+      style={{
+        height: '100vh',
+        position: 'relative',
+        backgroundSize: 'cover',
+        backgroundImage: `url('/backg.jpg')`,
+      }}
+    >
+      <div>
+        <Head>
+          <title>Comercialización</title>
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        </Head>
+        {!data && <Login />}
+        {data && data[0].role === 'admin' && <Layout user={user} />}
+        {data && data[0].role === 'vendedor' && <LayoutE user={user} />}
+        {data && data[0].role === 'promotor' && <Layout />}
       </div>
-    );
-  
+    </div>
+  );
 }
 
