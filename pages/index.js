@@ -12,33 +12,40 @@ import Login from './login';
 import Layout from '../components/Layout';
 import LayoutE from '../components/Layout/LayoutEmpleados';
 
-export default function Home({ data }) {
+export default function Home({  }) {
   const [user, setuser] = useState(null);
+  const [data, setdata] = useState([]);
  const getUser = async (token) => {
-  let url = `${process.env.IP}/api/v1/auth/me?token=${token}`;
+  if(token){
+    let url = `${process.env.IP}/api/v1/auth/me?token=${token}`;
   
   console.log(url);
       const response = await fetch(url, {
         method: 'GET',
       });
 
-      if (!response.ok) {
-        throw new Error('Error fetching data');
-      }
+     
 
       const json = await response.json();
 
       const jsondta = json.data;
-      data = jsondta 
       console.log(jsondta)
+      setdata(jsondta)
+  }else{
+    setdata([])
+  }
+      
  }
   useEffect(() => {
     console.log(data);
+    getUser(cookie.get('token'))
     if(cookie.get('token')){
       getUser(cookie.get('token'))
     }
     if (data[0] === undefined) {
-      // Handle case where data is undefined
+      if(cookie.get('token')){
+        getUser(cookie.get('token'))
+      }
      
     
     } else {
