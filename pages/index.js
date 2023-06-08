@@ -12,7 +12,6 @@ import Login from './login'
 
 import Layout from '../components/Layout'
 import LayoutE from '../components/Layout/LayoutEmpleados'
-import { useCookies } from 'react-cookie';
 
 export default function Home({data}) {
   const [user, setuser] = useState(null)
@@ -97,23 +96,35 @@ export default function Home({data}) {
     </div>
   )
 }
-Home.getInitialProps = async (ctx) => {
+export async function getServerSideProps(context) {
+  // Retrieve the token from the cookie
+  const token = context.req.cookies.token;
 
-  const [cookies, setCookie] = useCookies(['token']);
-  
-    const data =await fetch(`${process.env.IP}/api/v1/auth/me`,{
-      method: 'GET',
+  // Fetch the data from your API
+  try {
+    const response = await axios.get(`${process.env.IP}/api/v1/auth/me`, {
       headers: {
-        cookies
-    }
-    })
-   
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  const json = await data.json()
-  
-  const jsondta = json.data
-  for(var i in jsondta)
-    result.push(jsondta [i])
+    const json = await response.json();
+    const jsonData = json.data;
 
-  return { data: result }
+    // Parse and return the data as props
+    return {
+      props: {
+        data: jsonData,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+
+    // In case of an error, return an empty data object
+    return {
+      props: {
+        data: [],
+      },
+    };
+  }
 }
