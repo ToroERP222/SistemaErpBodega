@@ -13,7 +13,7 @@ import Login from './login'
 import Layout from '../components/Layout'
 import LayoutE from '../components/Layout/LayoutEmpleados'
 import { useCookies } from 'react-cookie';
-const [cookies, setCookie] = useCookies(['token']);
+
 export default function Home({data}) {
   const [user, setuser] = useState(null)
     console.log(data)
@@ -99,7 +99,7 @@ export default function Home({data}) {
 }
 Home.getInitialProps = async (ctx) => {
 
-
+  const [cookies, setCookie] = useCookies(['token']);
   
     const data =await fetch(`${process.env.IP}/api/v1/auth/me`,{
       method: 'GET',
