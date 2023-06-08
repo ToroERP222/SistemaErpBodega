@@ -26,7 +26,7 @@ export default function Home({}) {
   
           const json = await response.data
           const jsonData = json.data;
-          if (jsonData[0] === undefined) {
+          if (jsonData[0] === undefined) { 
             // User not logged in
             return(    <div  style={{height: '100vh',
         position: 'relative',
