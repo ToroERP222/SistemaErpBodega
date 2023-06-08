@@ -96,6 +96,7 @@ export default function Home({data}) {
   )
 }
 Home.getInitialProps = async ({ req }) => {
+  const result = [];
   if (req && req.headers && req.headers.cookie) {
     const cookies = req.headers.cookie.split(';');
     const tokenCookie = cookies.find((cookie) => cookie.trim().startsWith('token'));
