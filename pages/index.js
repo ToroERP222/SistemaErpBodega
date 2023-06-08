@@ -115,11 +115,17 @@ Home.getInitialProps = async ({ req }) => {
   
   const jsondta = json.data
   for(var i in jsondta)
-    result.push(jsondta [i])
+    result.push(jsondta[i])
 
   return { data: result }
   }else{
     return {data:result}
   }
 
+
+  
+  
+   
+
+ 
 }
