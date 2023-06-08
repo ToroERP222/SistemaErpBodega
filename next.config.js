@@ -10,3 +10,4 @@ module.exports ={ env: {
     domains: ['toroerpbackend.onrender.com'],
   },
 },nextConfig }
+ 
