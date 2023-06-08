@@ -95,9 +95,14 @@ export default function Home({data}) {
     </div>
   )
 }
-Home.getInitialProps = async (ctx) => {
-  const cookie = ctx.req ? ctx.req.headers.cookie : null
-  var result = [];
+Home.getInitialProps = async ({ req }) => {
+  if (req && req.headers && req.headers.cookie) {
+    const cookies = req.headers.cookie.split(';');
+    const tokenCookie = cookies.find((cookie) => cookie.trim().startsWith('token'));
+
+   console.log(tokenCookie)
+  }
+
 
   
     const data =await fetch(`${process.env.IP}/api/v1/auth/me?token=${cookie}`,{
