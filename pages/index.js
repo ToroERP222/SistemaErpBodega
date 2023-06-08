@@ -29,6 +29,7 @@ export default function Home({ data }) {
       const json = await response.json();
 
       const jsondta = json.data;
+      data = jsondta
       console.log(jsondta)
  }
   useEffect(() => {
