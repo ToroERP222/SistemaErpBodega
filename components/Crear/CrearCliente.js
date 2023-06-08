@@ -16,7 +16,7 @@ export default function CrearCliente({user})  {
     const [submitted, setSubmitted] = useState(false);
     useEffect(() => {
       setLoading(true)
-      fetch(`${process.env.IP}:5000/api/v1/productos`)
+      fetch(`${process.env.IP}/api/v1/productos`)
         .then((res) => res.json())
         .then((data) => {
           setData(data.data)
@@ -80,7 +80,7 @@ export default function CrearCliente({user})  {
        productos:prod
     }
     console.log(data)
-    const resp = await axios.post(`${process.env.IP}:5000/api/v1/cliente/crear`,data)
+    const resp = await axios.post(`${process.env.IP}/api/v1/cliente/crear`,data)
     alert('Cliente Agregado')
 
   }

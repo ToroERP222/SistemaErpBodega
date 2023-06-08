@@ -13,7 +13,7 @@ export default function Login() {
   function handleSubmit(e) {
     e.preventDefault();
     //call api
-    fetch(`${process.env.IP}:5000/api/v1/auth/login`, {
+    fetch(`${process.env.IP}/api/v1/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

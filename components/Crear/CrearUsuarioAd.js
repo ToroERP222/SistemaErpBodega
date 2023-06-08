@@ -30,7 +30,7 @@ export default function CrearUsuarioAd() {
           password: e.target.password.value,
         }
         console.log(data)
-        const resp = await axios.post(`${process.env.IP}:5000/api/v1/auth/register`,data)
+        const resp = await axios.post(`${process.env.IP}/api/v1/auth/register`,data)
         console.log(resp)
         setSubmitted(true);
         alert('agregado')

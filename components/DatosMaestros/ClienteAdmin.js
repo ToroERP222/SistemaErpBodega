@@ -11,7 +11,7 @@ import Router from 'next/router'
 export default function ClienteAdmin(user) {
     const [cli, setcli] = useState([])
     const fetchptda = async (d) => {
-      const resp = await fetch(`${process.env.IP}:5000/api/v1/cliente`)
+      const resp = await fetch(`${process.env.IP}/api/v1/cliente`)
        const dtajson = await resp.json()
        const crdta = dtajson.data
        console.log()
@@ -113,7 +113,7 @@ export default function ClienteAdmin(user) {
       }
       
     
-      axios.put(`${process.env.IP}:5000/api/v1/cliente/actualizar/${e._id}`,data )
+      axios.put(`${process.env.IP}/api/v1/cliente/actualizar/${e._id}`,data )
       .then(res => {
         console.log(res);
       })
@@ -145,7 +145,7 @@ export default function ClienteAdmin(user) {
 
     }
     const handleEliminar = async (d) => {
-     const res = await axios.delete(`${process.env.IP}:5000/api/v1/cliente/eliminar/${d._id}`)
+     const res = await axios.delete(`${process.env.IP}/api/v1/cliente/eliminar/${d._id}`)
      console.log(res)
     }
   

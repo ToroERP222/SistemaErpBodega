@@ -57,21 +57,21 @@ let count=1
   }
   const fetchptda = async (d) => {
     var result = [];
-  const resp = await fetch(`${process.env.IP}:5000/api/v1/productos`)
+  const resp = await fetch(`${process.env.IP}/api/v1/productos`)
    const dtajson = await resp.json()
    const crdta = dtajson.data
    setPrdlen(crdta.length)
     return setpta(crdta);  
   }
   const getclients = async () => {
-    const res = await fetch(`${process.env.IP}:5000/api/v1/cliente`)
+    const res = await fetch(`${process.env.IP}/api/v1/cliente`)
     const dta = await res.json() 
     const crdta = dta.data
     console.log(crdta)
     return setclientes(crdta)
   }
   const getTiendas = async () => {
-    const res = await fetch(`${process.env.IP}:5000/api/v1/tienda`)
+    const res = await fetch(`${process.env.IP}/api/v1/tienda`)
     const dta = await res.json() 
     const crdta = dta.data
     console.log(crdta)
@@ -111,7 +111,7 @@ let count=1
         
     }
     console.log(data)
-    const resp = await axios.post(`${process.env.IP}:5000/api/v1/pedido/crear`,data)
+    const resp = await axios.post(`${process.env.IP}/api/v1/pedido/crear`,data)
   
 
   }
@@ -241,7 +241,7 @@ const VerPedidos= ({user}) => {
   
   const fetchdtaH= async () => {
     var result = [];
-    const resp = await fetch(`${process.env.IP}:5000/api/v1/almacen/pedido/`)
+    const resp = await fetch(`${process.env.IP}/api/v1/almacen/pedido/`)
     const dtajson = await resp.json()
     const crdta = dtajson.data
      
@@ -252,7 +252,7 @@ const VerPedidos= ({user}) => {
     }
   const fetchptda = async (d) => {
     var result = [];
-  const resp = await fetch(`${process.env.IP}:5000/api/v1/productos`)
+  const resp = await fetch(`${process.env.IP}/api/v1/productos`)
    const dtajson = await resp.json()
    const crdta = dtajson.data
    
@@ -295,7 +295,7 @@ const VerPedidos= ({user}) => {
   }, [])
   const [users, setusers] = useState([])
   const getuser = async () => {
-    const res = await fetch(`${process.env.IP}:5000/api/v1/auth/users`)
+    const res = await fetch(`${process.env.IP}/api/v1/auth/users`)
     const dta = await res.json()
     const crdta = dta.data
     var vendedores = []
@@ -338,8 +338,8 @@ const VerPedidos= ({user}) => {
   const update = {
     estatus:'liberado'
   }
-  const respPicking = await axios.post(`${process.env.IP}:5000/api/v1/picking/crear`,data)
-  const updatePedido = await axios.put(`${process.env.IP}:5000/api/v1/almacen/pedido/update/${d._id}`,update)
+  const respPicking = await axios.post(`${process.env.IP}/api/v1/picking/crear`,data)
+  const updatePedido = await axios.put(`${process.env.IP}/api/v1/almacen/pedido/update/${d._id}`,update)
 console.log(updatePedido)
 
   }
@@ -439,10 +439,10 @@ const VerPicking= ({user}) => {
   const [dta, setdta] = useState([initialState])
   const [pta, setpta] = useState([])
   const getdata = async () => {
-    const resp = await fetch(`${process.env.IP}:5000/api/v1/picking/pendientes/`)
+    const resp = await fetch(`${process.env.IP}/api/v1/picking/pendientes/`)
   const dtajson = await resp.json()
   const crdta = dtajson.data
-  const respPr = await fetch(`${process.env.IP}:5000/api/v1/productos`)
+  const respPr = await fetch(`${process.env.IP}/api/v1/productos`)
   const dtajsonPR = await respPr.json()
   const crdtaPR = dtajsonPR.data
   
@@ -464,7 +464,7 @@ const VerPicking= ({user}) => {
      estatus:est
  
      }
-    const resp = await axios.put(`${process.env.IP}:5000/api/v1/picking/update/${e}`,data)
+    const resp = await axios.put(`${process.env.IP}/api/v1/picking/update/${e}`,data)
  
  
  
@@ -476,13 +476,13 @@ const VerPicking= ({user}) => {
     const update = {
       estatus:'pendiente'
     }
-    const updatePedido = await axios.put(`${process.env.IP}:5000/api/v1/almacen/pedido/update/${d.idPedido}`,update)
+    const updatePedido = await axios.put(`${process.env.IP}/api/v1/almacen/pedido/update/${d.idPedido}`,update)
     console.log(updatePedido)
     const data = {
       estatus:'no enviado'
   
       }
-     const resp = await axios.put(`${process.env.IP}:5000/api/v1/picking/update/${d._id}`,data)
+     const resp = await axios.put(`${process.env.IP}/api/v1/picking/update/${d._id}`,data)
   }
   
   return(<>
@@ -569,10 +569,10 @@ const VerPickingTD= ({user}) => {
   const [dta, setdta] = useState([initialState])
   const [pta, setpta] = useState([])
   const getdata = async () => {
-    const resp = await fetch(`${process.env.IP}:5000/api/v1/picking/`)
+    const resp = await fetch(`${process.env.IP}/api/v1/picking/`)
   const dtajson = await resp.json()
   const crdta = dtajson.data
-  const respPr = await fetch(`${process.env.IP}:5000/api/v1/productos`)
+  const respPr = await fetch(`${process.env.IP}/api/v1/productos`)
   const dtajsonPR = await respPr.json()
   const crdtaPR = dtajsonPR.data
   
@@ -594,7 +594,7 @@ const updPicking = async (e) => {
      estatus:est
  
      }
-    const resp = await axios.put(`${process.env.IP}:5000/api/v1/picking/update/${e}`,data)
+    const resp = await axios.put(`${process.env.IP}/api/v1/picking/update/${e}`,data)
 }
   
   
@@ -702,7 +702,7 @@ const LiquidacionAdmin = (user) => {
 var monto;
 const fetchdta = async (d) => {
     var result = [];
-    const resp = await fetch(`${process.env.IP}:5000/api/v1/liquidacion/`)
+    const resp = await fetch(`${process.env.IP}/api/v1/liquidacion/`)
     const dtajson = await resp.json()
     const crdta = dtajson.data
     console.log(crdta.length)
@@ -723,7 +723,7 @@ const fetchdta = async (d) => {
   }
 const fetchdtaP = async (d) => {
     var result = [];
-    const resp = await fetch(`${process.env.IP}:5000/api/v1/liquidacion/unica/${d}`)
+    const resp = await fetch(`${process.env.IP}/api/v1/liquidacion/unica/${d}`)
     const dtajson = await resp.json()
     const crdta = dtajson.data
 
@@ -734,7 +734,7 @@ const fetchdtaP = async (d) => {
   }
 const fetchptda = async (d) => {
     var result = [];
-    const resp = await fetch(`${process.env.IP}:5000/api/v1/productos`)
+    const resp = await fetch(`${process.env.IP}/api/v1/productos`)
    const dtajson = await resp.json()
    const crdta = dtajson.data
    
@@ -874,7 +874,7 @@ const CrearRemision = ({user}) =>{
     const [producto, setproducto] = useState(null)
     const [canal, setcanal] = useState(null)
     const getclients = async () => {
-      const res = await fetch(`${process.env.IP}:5000/api/v1/cliente`)
+      const res = await fetch(`${process.env.IP}/api/v1/cliente`)
       const dta = await res.json() 
       const crdta = dta.data
       console.log(crdta)
@@ -1034,7 +1034,7 @@ const handleSubmit = async (e) => {
 
 
   setdataC(data)
-  //const resp = await axios.post(`${process.env.IP}:5000/api/v1/remision/crear`,data)
+  //const resp = await axios.post(`${process.env.IP}/api/v1/remision/crear`,data)
   
   
   
@@ -1102,7 +1102,7 @@ const VerRemisionD = () => {
   
   const fetchdta = async (d) => {
     var result = [];
-  const resp = await fetch(`${process.env.IP}:5000/api/v1/remision/unica/${d}`)
+  const resp = await fetch(`${process.env.IP}/api/v1/remision/unica/${d}`)
    const dtajson = await resp.json()
    const crdta = dtajson.data
    
@@ -1113,7 +1113,7 @@ const VerRemisionD = () => {
   }
   const fetchptda = async (d) => {
     var result = [];
-  const resp = await fetch(`${process.env.IP}:5000/api/v1/productos`)
+  const resp = await fetch(`${process.env.IP}/api/v1/productos`)
    const dtajson = await resp.json()
    const crdta = dtajson.data
    
@@ -1208,7 +1208,7 @@ const CrearCambio = ({user}) =>{  const [prdlen, setPrdlen] = useState(0)
   const Rtienda = () => {
     const [isLoading, setLoading] = useState(false)
     const [tienda, setTienda] = useState(null)
-    fetch(`${process.env.IP}:5000/api/v1/tienda `)
+    fetch(`${process.env.IP}/api/v1/tienda `)
     .then((res) => res.json())
     .then((data) => {
       setTienda(data.data)
@@ -1250,7 +1250,7 @@ const CrearCambio = ({user}) =>{  const [prdlen, setPrdlen] = useState(0)
   
     useEffect(() => {
       setLoading(true)
-      fetch(`${process.env.IP}:5000/api/v1/productos`)
+      fetch(`${process.env.IP}/api/v1/productos`)
         .then((res) => res.json())
         .then((data) => {
           setData(data.data)
@@ -1324,7 +1324,7 @@ const handleSubmit = async (e) => {
     
 }
   
-  const resp = await axios.post(`${process.env.IP}:5000/api/v1/cambios/crear`,data)
+  const resp = await axios.post(`${process.env.IP}/api/v1/cambios/crear`,data)
   console.log(resp)
   
 
@@ -1375,7 +1375,7 @@ const VerCambios = ({user}) => {
   
   const fetchdta = async (d) => {
   var result = [];
-  const resp = await fetch(`${process.env.IP}:5000/api/v1/cambios/${d}`)
+  const resp = await fetch(`${process.env.IP}/api/v1/cambios/${d}`)
   const dtajson = await resp.json()
   const crdta = dtajson.data
    
@@ -1386,7 +1386,7 @@ const VerCambios = ({user}) => {
   }
   const fetchdtaH= async () => {
     var result = [];
-    const resp = await fetch(`${process.env.IP}:5000/api/v1/cambios/`)
+    const resp = await fetch(`${process.env.IP}/api/v1/cambios/`)
     const dtajson = await resp.json()
     const crdta = dtajson.data
      
@@ -1397,7 +1397,7 @@ const VerCambios = ({user}) => {
     }
   const fetchptda = async (d) => {
     var result = [];
-  const resp = await fetch(`${process.env.IP}:5000/api/v1/productos`)
+  const resp = await fetch(`${process.env.IP}/api/v1/productos`)
    const dtajson = await resp.json()
    const crdta = dtajson.data
    
@@ -1506,7 +1506,7 @@ const CrearFactura = ({user}) =>{
   const Rtienda = () => {
     const [isLoading, setLoading] = useState(false)
     const [tienda, setTienda] = useState(null)
-    fetch(`${process.env.IP}:5000/api/v1/tienda `)
+    fetch(`${process.env.IP}/api/v1/tienda `)
     .then((res) => res.json())
     .then((data) => {
       setTienda(data.data)
@@ -1543,7 +1543,7 @@ const CrearFactura = ({user}) =>{
   const Rcliente = () => {
     const [isLoading, setLoading] = useState(false)
     const [tienda, setTienda] = useState(null)
-    fetch(`${process.env.IP}:5000/api/v1/cliente `)
+    fetch(`${process.env.IP}/api/v1/cliente `)
     .then((res) => res.json())
     .then((data) => {
       setTienda(data.data)
@@ -1588,7 +1588,7 @@ const handleSubmit = async (e) => {
     piezasEntregadas:e.target.piezasEntregadas.value
 }
   console.log(data)
-  const resp = await axios.post(`${process.env.IP}:5000/api/v1/facturacion/crear`,data)
+  const resp = await axios.post(`${process.env.IP}/api/v1/facturacion/crear`,data)
   Router.reload('/')
   
   
@@ -1658,7 +1658,7 @@ const VerFactura = ({user}) => {
   
   const fetchdta = async (d) => {
   var result = [];
-  const resp = await fetch(`${process.env.IP}:5000/api/v1/facturacion/${d}`)
+  const resp = await fetch(`${process.env.IP}/api/v1/facturacion/${d}`)
   const dtajson = await resp.json()
   const crdta = dtajson.data
    
@@ -1669,7 +1669,7 @@ const VerFactura = ({user}) => {
   }
   const fetchdtaH= async () => {
     var result = [];
-    const resp = await fetch(`${process.env.IP}:5000/api/v1/facturacion/`)
+    const resp = await fetch(`${process.env.IP}/api/v1/facturacion/`)
     const dtajson = await resp.json()
     const crdta = dtajson.data
      

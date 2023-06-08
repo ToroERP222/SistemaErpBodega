@@ -8,14 +8,14 @@ export default function Fabricante() {
   const [pta, setpta] = useState([])
   const [prod, setprod] = useState([])
   const getProductos = async () => {
-    const resp = await fetch(`${process.env.IP}:5000/api/v1/productos`)
+    const resp = await fetch(`${process.env.IP}/api/v1/productos`)
     const dtajson = await resp.json() 
     const crdta = dtajson.data
     return setprod(crdta)
   }
 const getPedidos = async () => {
     var result = [];
-    const resp = await fetch(`${process.env.IP}:5000/api/v1/almacen/pedidoF`)
+    const resp = await fetch(`${process.env.IP}/api/v1/almacen/pedidoF`)
      const dtajson = await resp.json()
      const crdta = dtajson.data
      console.log(pta)    
@@ -99,7 +99,7 @@ const VerPedidoF = () => {
     const updatedPta = [...pta];
     updatedPta[row].productos[col].cantidad = value;
 
-    fetch(`${process.env.IP}:5000/api/v1/almacen/pedidoF/actualizar/${id}`, {
+    fetch(`${process.env.IP}/api/v1/almacen/pedidoF/actualizar/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"

@@ -23,13 +23,13 @@ export default function CrearTienda({user}) {
       }
     }, [submitted]);
     const getuser = async () => {
-        const res = await fetch(`${process.env.IP}:5000/api/v1/auth/users`)
+        const res = await fetch(`${process.env.IP}/api/v1/auth/users`)
         const dta = await res.json()
         const crdta = dta.data
        return setusers(crdta)
       }
     const getclients = async () => {
-        const res = await fetch(`${process.env.IP}:5000/api/v1/cliente`)
+        const res = await fetch(`${process.env.IP}/api/v1/cliente`)
         const dta = await res.json() 
         const crdta = dta.data
         console.log(crdta)
@@ -149,7 +149,7 @@ export default function CrearTienda({user}) {
        
        
        console.log(data.diaE)
-       const resp = await axios.post(`${process.env.IP}:5000/api/v1/tienda/crear`,data)
+       const resp = await axios.post(`${process.env.IP}/api/v1/tienda/crear`,data)
       alert('agregado')
   
       }

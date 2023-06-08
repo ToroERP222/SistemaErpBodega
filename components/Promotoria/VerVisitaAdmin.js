@@ -17,7 +17,7 @@ export default function VerVisitaAdmin({user})  {
 
   const fetchdta = async (d) => {
     var result = [];
-    const resp = await fetch(`${process.env.IP}:5000/api/v1/promotor/visitas`)
+    const resp = await fetch(`${process.env.IP}/api/v1/promotor/visitas`)
     const dtajson = await resp.json()
     const crdta = dtajson.data.reverse()
      return setdta(crdta);  
@@ -25,7 +25,7 @@ export default function VerVisitaAdmin({user})  {
   }
   const fetchptda = async (d) => {
     var result = [];
-    const resp = await fetch(`${process.env.IP}:5000/api/v1/productos`)
+    const resp = await fetch(`${process.env.IP}/api/v1/productos`)
     const dtajson = await resp.json()
     const crdta = dtajson.data
     return setpta(crdta); 
@@ -44,7 +44,7 @@ export default function VerVisitaAdmin({user})  {
     estatus:est
 
     }
-   const resp = await axios.put(`${process.env.IP}:5000/api/v1/promotor/update/${e}`,data)
+   const resp = await axios.put(`${process.env.IP}/api/v1/promotor/update/${e}`,data)
 
 
 

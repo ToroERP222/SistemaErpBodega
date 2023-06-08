@@ -12,7 +12,7 @@ export default function ProductosUser(user) {
   const [submitted, setSubmitted] = useState(false);
   const fetchProducts = async () => {
     try {
-      const resp = await axios.get(`${process.env.IP}:5000/api/v1/productos`);
+      const resp = await axios.get(`${process.env.IP}/api/v1/productos`);
       setProducts(resp.data.data);
     } catch (err) {
       console.error(err);
@@ -21,7 +21,7 @@ export default function ProductosUser(user) {
 
   const fetchClients = async () => {
     try {
-      const resp = await axios.get(`${process.env.IP}:5000/api/v1/cliente`);
+      const resp = await axios.get(`${process.env.IP}/api/v1/cliente`);
       setClients(resp.data.data);
     } catch (err) {
       console.error(err);
@@ -62,7 +62,7 @@ const handleSaveClick = async () => {
       formData.append(key, value);
     }
     formData.append('img', img);
-    await axios.put(`${process.env.IP}:5000/api/v1/productos/actualizar/${editedProduct._id}`, formData);
+    await axios.put(`${process.env.IP}/api/v1/productos/actualizar/${editedProduct._id}`, formData);
     setEditIndex(-1);
     setEditedProduct({});
     setimg(null);

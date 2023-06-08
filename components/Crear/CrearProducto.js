@@ -19,7 +19,7 @@ export default function CrearProducto() {
 
     const fetchcliente = async (d) => {
       var result = [];
-    const resp = await fetch(`${process.env.IP}:5000/api/v1/cliente`)
+    const resp = await fetch(`${process.env.IP}/api/v1/cliente`)
      const dtajson = await resp.json()
      const crdta = dtajson.data
       return setcliente(crdta);  
@@ -50,7 +50,7 @@ export default function CrearProducto() {
         formData.append('codigoBarras', data.codigoBarras)
         formData.append('descripcion', data.descripcion)
        
-       const resp = await axios.post(`${process.env.IP}:5000/api/v1/productos/crear`,formData)
+       const resp = await axios.post(`${process.env.IP}/api/v1/productos/crear`,formData)
   
       
      var nombresClientes = [cliente.map(e => e.nombreCliente)]
@@ -59,7 +59,7 @@ export default function CrearProducto() {
       for (let index = 0; index < nombresClientes[0].length; index++) {
         
         const dataC = {nombre:e.target.producto.value,precio:document.getElementById(nombresClientes[0][index]).value,codigoBarras:data.codigoBarras}
-       const resp = await axios.put(`${process.env.IP}:5000/api/v1/productos/cliente/${ids[0][index]}`,dataC)
+       const resp = await axios.put(`${process.env.IP}/api/v1/productos/cliente/${ids[0][index]}`,dataC)
         
       }
      var fech = new Date()
