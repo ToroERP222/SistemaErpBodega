@@ -22,12 +22,7 @@ export default function Home({}) {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await fetch(`${process.env.IP}/api/v1/auth/me`,{
-            method: 'GET',
-            headers: {
-              cookie:cookies
-          }
-          })
+          const response = await axios.get(`${process.env.IP}/api/v1/auth/me?token=${cookies}`);
   
           const json = await response.json();
           const jsonData = json.data;
