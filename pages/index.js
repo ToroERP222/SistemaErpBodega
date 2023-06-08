@@ -100,19 +100,21 @@ Home.getInitialProps = async ({ req }) => {
   console.log(url);
 
   try {
-    const response = await fetch(url, {
-      method: 'GET',
-    });
+    if (token) { // Check if token is not null or empty
+      const response = await fetch(url, {
+        method: 'GET',
+      });
 
-    if (!response.ok) {
-      throw new Error('Error fetching data');
-    }
+      if (!response.ok) {
+        throw new Error('Error fetching data');
+      }
 
-    const json = await response.json();
+      const json = await response.json();
 
-    const jsondta = json.data;
-    for (var i in jsondta) {
-      result.push(jsondta[i]);
+      const jsondta = json.data;
+      for (var i in jsondta) {
+        result.push(jsondta[i]);
+      }
     }
 
     return { data: result };
@@ -122,3 +124,4 @@ Home.getInitialProps = async ({ req }) => {
     return { data: result }; // Return an empty result or handle the error response
   }
 };
+
