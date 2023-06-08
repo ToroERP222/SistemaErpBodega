@@ -1,3 +1,4 @@
+
 import { useState,useEffect } from 'react';
 import Head from 'next/head'
 import Image from 'next/image'
@@ -11,97 +12,105 @@ import Login from './login'
 
 import Layout from '../components/Layout'
 import LayoutE from '../components/Layout/LayoutEmpleados'
-import { useCookies } from 'react-cookie';
-
 export default function Home({data}) {
+  const [user, setuser] = useState(null)
+    console.log(data)
+    useEffect(() => {
+      if (data[0]=== undefined) {
+        return(    <div  style={{height: '100vh',
+        position: 'relative',
+        backgroundSize: 'cover',
+        backgroundImage: `url('/backg.jpg')`}}>
+          <Login/>
+        </div>)
+    
   
-  const [cookies, setCookie] = useCookies(['token']);
-console.log(data)
-  const [user, setUser] = useState(null);
-    console.log(cookies)
-    if (data === null) { 
-      // User not logged in
-      return(    <div  style={{height: '100vh',
-  position: 'relative',
-  backgroundSize: 'cover',
-  backgroundImage: `url('/backg.jpg')`}}>
-    <Login/>
-  </div>)
+  
+      
+    }else{
+      setuser(data[0].nombre)
     }
+    
+      
+    }, [data])
     
    
 
  
 
-     
-  return (
-    <div
-      style={{
-        height: '100vh',
-        position: 'relative',
-        backgroundSize: 'cover',
-        backgroundImage: `url('/backg.jpg')`,
-      }}
-    >
-      <div>
-        <Head>
-          <title>Comercialización</title>
-          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        </Head>
-        {!data && <Login />}
-        {data && data[0].role === 'admin' && <Layout user={user} />}
-        {data && data[0].role === 'vendedor' && <LayoutE user={user} />}
-        {data && data[0].role === 'promotor' && <Layout />}
-      </div>
-    </div>
-  );
-}
-
-
-Home.getInitialProps = async (ctx) => {
-  const { req } = ctx;
-  const cookie = req && req.headers ? req.headers.cookie : null;
-  const token = getCookieValue(cookie, 'token');
-
-  if (token) {
-    try {
-      const response = await axios.get(`${process.env.IP}/api/v1/auth/me?token=${token}`);
-      const json = await response.data;
-      const jsonData = json.data;
-console.log(jsonData)
-      if (jsonData[0] === undefined) {
-        // User not logged in
-        return {
-          data: null,
-        };
-      } else {
-        return {
-          data: jsonData,
-        };
+     const [info, setinfo] = useState({})
+      let vendedor;
+      let admin
+      let promotor;
+      let almacen;
+      let init = false
+      if(data[0] != undefined){
+        if(data[0].role === 'vendedor'){
+        vendedor= true
+        init = true
+      }else if(data[0].role === 'admin'||'distribuidor'||'almacen'){
+        admin = true
+        init = true
+      }else if(data[0].role === 'promotor'){
+        promotor = true
+        init = true
       }
-    } catch (error) {
-      console.error(error);
     }
-  }
+      
+      
+    
+      
 
-  // User not logged in
-  return {
-    data: null,
-  };
-};
+  return (
+    <div  style={{height: '100vh',
+      position: 'relative',
+      backgroundSize: 'cover',
+      backgroundImage: `url('/backg.jpg')`}}>
+       
+     <div>
+      <Head>
+        <title>Comercialización</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      {!init && (
+        <><Login/></>
+      )}
+      {admin && (
+        <>
+          <Layout user={user}/>
+        </>
+      )}
+      { vendedor && (
+        <>
+          <LayoutE user={user}/>
+        </>
+      )}
+       { promotor && (
+        <>
+          <Layout/>
+        </>
+      )}
 
-function getCookieValue(cookie, name) {
-  if (!cookie) {
-    return null;
-  }
+    </div>
+    </div>
+  )
+}
+Home.getInitialProps = async (ctx) => {
+  const cookie = ctx.req ? ctx.req.headers.cookie : null
+  var result = [];
 
-  const value = cookie
-    .split(';')
-    .find((c) => c.trim().startsWith(`${name}=`));
+  
+    const data =await fetch(`${process.env.IP}/api/v1/auth/me?token=${cookie}`,{
+      method: 'GET'
+   
+    })
+   
 
-  if (!value) {
-    return null;
-  }
+  const json = await data.json()
+  
+  const jsondta = json.data
+  for(var i in jsondta)
+    result.push(jsondta [i])
 
-  return value.split('=')[1];
+  return { data: result }
 }
