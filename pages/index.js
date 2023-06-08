@@ -122,4 +122,4 @@ Home.getInitialProps = async ({ req }) => {
     return {data:null}
   }
 
-
+}
