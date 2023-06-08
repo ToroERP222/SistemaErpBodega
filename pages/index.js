@@ -16,10 +16,10 @@ import { useCookies } from 'react-cookie';
 export default function Home({data}) {
   
   const [cookies, setCookie] = useCookies(['token']);
-
+console.log(data)
   const [user, setUser] = useState(null);
     console.log(cookies)
-    if (data === undefined) { 
+    if (data === null) { 
       // User not logged in
       return(    <div  style={{height: '100vh',
   position: 'relative',
@@ -68,7 +68,7 @@ Home.getInitialProps = async (ctx) => {
       const response = await axios.get(`${process.env.IP}/api/v1/auth/me?token=${token}`);
       const json = await response.data;
       const jsonData = json.data;
-
+console.log(jsonData)
       if (jsonData[0] === undefined) {
         // User not logged in
         return {
