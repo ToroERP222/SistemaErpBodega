@@ -104,17 +104,13 @@ Home.getInitialProps = async ({ req }) => {
     if (tokenCookie) {
       token = tokenCookie.split('=')[1];
     }
-   console.log(tokenCookie)
-  }
-
-
-  
-    const data =await fetch(`${process.env.IP}/api/v1/auth/me?token=${token}`,{
-      method: 'GET'
-   
-    })
-   
-
+   console.log(token)
+   const url = `${process.env.IP}/api/v1/auth/me?token=${token}`
+   console.log(url)
+   const data =await fetch(url,{
+    method: 'GET'
+ 
+  })
   const json = await data.json()
   
   const jsondta = json.data
@@ -122,5 +118,8 @@ Home.getInitialProps = async ({ req }) => {
     result.push(jsondta [i])
 
   return { data: result }
-}
+  }else{
+    return {data:null}
+  }
+
 
