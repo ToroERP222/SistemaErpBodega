@@ -12,6 +12,7 @@ import Login from './login'
 
 import Layout from '../components/Layout'
 import LayoutE from '../components/Layout/LayoutEmpleados'
+import { useCookies } from 'react-cookie';
 const [cookies, setCookie] = useCookies(['token']);
 export default function Home({data}) {
   const [user, setuser] = useState(null)
