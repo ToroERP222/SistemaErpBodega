@@ -12,10 +12,12 @@ import Login from './login'
 
 import Layout from '../components/Layout'
 import LayoutE from '../components/Layout/LayoutEmpleados'
-import { getServerSideProps } from '../util/api.js';
+import { useCookies } from 'react-cookie';
+
 export default function Home({data}) {
   const [user, setuser] = useState(null)
-    console.log(data)
+  const [cookies, setCookie] = useCookies(['token']);
+    console.log(cookies)
     useEffect(() => {
       if (data[0]=== undefined) {
         return(    <div  style={{height: '100vh',
@@ -96,4 +98,24 @@ export default function Home({data}) {
     </div>
   )
 }
-export { getServerSideProps };
+Home.getInitialProps = async (ctx) => {
+  const cookie = ctx.req ? ctx.req.headers.cookie : null
+  var result = [];
+
+  
+    const data =await fetch(`${process.env.IP}/api/v1/auth/me`,{
+      method: 'GET',
+      headers: {
+        cookie
+    }
+    })
+   
+
+  const json = await data.json()
+  
+  const jsondta = json.data
+  for(var i in jsondta)
+    result.push(jsondta [i])
+
+  return { data: result }
+}
