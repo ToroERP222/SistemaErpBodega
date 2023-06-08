@@ -14,6 +14,8 @@ import Layout from '../components/Layout'
 import LayoutE from '../components/Layout/LayoutEmpleados'
 export default function Home({data}) {
   const [user, setuser] = useState(null)
+  const [data, setdata] = useState(null)
+  const getData
     console.log(data)
     useEffect(() => {
       if (data[0]=== undefined) {

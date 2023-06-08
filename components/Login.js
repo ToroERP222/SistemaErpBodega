@@ -1,74 +1,66 @@
-
-import React, {useState} from 'react';
-import Router from 'next/router';
+import { useState, useEffect } from 'react';
+import Head from 'next/head';
+import Image from 'next/image';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 import cookie from 'js-cookie';
-import {Container,Row,Col, Form,Button} from 'react-bootstrap'
-import Navb from './Navb';
+import Link from 'next/link';
+import Router from 'next/router';
 
-export default function Login() {
-  const [loginError, setLoginError] = useState('');
-  const [clave, setClave] = useState('');
-  const [password, setPassword] = useState('');
+import Login from './login';
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    //call api
-    fetch(`${process.env.IP}/api/v1/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        clave,
-        password,
-      }),
-    })
-      .then((r) => {
-        return r.json();
-      })
-      .then((data) => {
-        if (data && data.error) {
-          setLoginError(data.message);
+import Layout from '../components/Layout';
+import LayoutE from '../components/Layout/LayoutEmpleados';
+
+export default function Home() {
+  const [user, setUser] = useState(null);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${process.env.IP}/api/v1/auth/me`, {
+          headers: {
+            Cookie: cookie.get('cookieName'), // Replace 'cookieName' with the actual name of your cookie
+          },
+        });
+
+        const json = await response.json();
+        const jsonData = json.data;
+        if (jsonData[0] === undefined) {
+          // User not logged in
+          return;
         }
-        if (data && data.token) {
-          //set cookie
-          console.log(data)
-          cookie.set('token', data.token, {expires: 2});
-          Router.push('/');
-          Router.reload();
-        }
-      });
-  }
+
+        setUser(jsonData[0].nombre);
+        setData(jsonData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
-    <>
-    
-    <Container>
-      <Row>
-      <Col>
-      <Form onSubmit={handleSubmit}>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-    <Form.Label>Clave Usuario</Form.Label>
-    <Form.Control type="text" placeholder="Clave Usuario" name="clave"
-        
-        value={clave}
-        onChange={(e) => setClave(e.target.value)}/>
-
-  </Form.Group>
-  <Form.Group className="mb-3" controlId="formBasicEmail">
-    <Form.Label>Clave Usuario</Form.Label>
-    <Form.Control type="text"  placeholder="Password" name="password"
-        
-        //value={password}
-        onChange={(e) => setPassword(e.target.value)}/>
-
-  </Form.Group>
-     
-      <Button type="submit" value="Submit">Ingresar</Button>
-      {loginError && <p style={{color: 'red'}}>{loginError}</p>}
-    </Form>
-      </Col>
-    </Row>
-    </Container>
-    </>
+    <div
+      style={{
+        height: '100vh',
+        position: 'relative',
+        backgroundSize: 'cover',
+        backgroundImage: `url('/backg.jpg')`,
+      }}
+    >
+      <div>
+        <Head>
+          <title>Comercialización</title>
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        </Head>
+        {!data && <Login />}
+        {data && data[0].role === 'admin' && <Layout user={user} />}
+        {data && data[0].role === 'vendedor' && <LayoutE user={user} />}
+        {data && data[0].role === 'promotor' && <Layout />}
+      </div>
+    </div>
   );
 }
