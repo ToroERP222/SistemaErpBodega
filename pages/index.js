@@ -6,7 +6,7 @@ import Layout from '../components/Layout';
 import LayoutE from '../components/Layout/LayoutEmpleados';
 import { useCookies } from 'react-cookie';
 
-export default function Home({ data }) {
+const Home = ({ data }) => {
   const [cookies, setCookie] = useCookies(['token']);
   const [user, setUser] = useState(data && data[0] ? data[0].nombre : null);
 
@@ -31,10 +31,10 @@ export default function Home({ data }) {
       </div>
     </div>
   );
-}
+};
 
-export async function getServerSideProps(context) {
-  const { req } = context;
+Home.getInitialProps = async (ctx) => {
+  const { req, res } = ctx;
   const { token } = req.cookies;
 
   if (token) {
@@ -46,15 +46,11 @@ export async function getServerSideProps(context) {
       if (jsonData[0] === undefined) {
         // User not logged in
         return {
-          props: {
-            data: null,
-          },
+          data: null,
         };
       } else {
         return {
-          props: {
-            data: jsonData,
-          },
+          data: jsonData,
         };
       }
     } catch (error) {
@@ -64,8 +60,8 @@ export async function getServerSideProps(context) {
 
   // User not logged in
   return {
-    props: {
-      data: null,
-    },
+    data: null,
   };
-}
+};
+
+export default Home;
