@@ -24,8 +24,8 @@ export default function Home({}) {
         try {
           const response = await axios.get(`${process.env.IP}/api/v1/auth/me?token=${cookies.token}`);
   
-          const json = await response.json();
-          const jsonData = json.data;
+          
+          console.log(response.data)
           if (jsonData[0] === undefined) {
             // User not logged in
             return(    <div  style={{height: '100vh',
