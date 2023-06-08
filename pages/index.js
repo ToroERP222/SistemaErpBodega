@@ -18,6 +18,7 @@ export default function Home({}) {
   const [user, setuser] = useState(null)
   const [cookies, setCookie] = useCookies(['token']);
   const [data, setData] = useState(null);
+  const [user, setUser] = useState(null);
     console.log(cookies)
     useEffect(() => {
       const fetchData = async () => {
