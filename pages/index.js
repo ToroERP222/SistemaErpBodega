@@ -17,6 +17,7 @@ export default function Home() {
   const [data, setdata] = useState(null)
   useEffect(() => {
     const fetchData = async () => {
+      console.log(cookie.get('token'))
       try {
         const response = await axios.get(`${process.env.IP}/api/v1/auth/me`, {
           headers: {
