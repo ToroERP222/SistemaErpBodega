@@ -21,7 +21,7 @@ export default function Home({data}) {
       try {
         const response = await axios.get(`${process.env.IP}/api/v1/auth/me`, {
           headers: {
-            cookie: cookie.get('token'), // Replace 'cookieName' with the actual name of your cookie
+            withCredentials: true, // Replace 'cookieName' with the actual name of your cookie
           },
         });
 
