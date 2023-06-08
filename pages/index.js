@@ -100,7 +100,7 @@ Home.getInitialProps = async (ctx) => {
   var result = [];
 
   
-    const data =await fetch(`http://${process.env.IP}:5000/api/v1/auth/me`,{
+    const data =await fetch(`${process.env.IP}:5000/api/v1/auth/me`,{
       method: 'GET',
       headers: {
         cookie

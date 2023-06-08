@@ -23,7 +23,7 @@ export default function CrearVisita({user}){
         const [isLoading, setLoading] = useState(false)
         const [tienda, setTienda] = useState(null)
         const [nomTienda, setnomTienda] = useState(null)
-        fetch( `http://${process.env.IP}:5000/api/v1/tienda`)
+        fetch( `${process.env.IP}:5000/api/v1/tienda`)
         .then((res) => res.json())
         .then((data) => {
           setTienda(data.data)
@@ -87,7 +87,7 @@ export default function CrearVisita({user}){
           useEffect(() => {
             
             setLoading(true)
-            fetch(`http://${process.env.IP}:5000/api/v1/productos`)
+            fetch(`${process.env.IP}:5000/api/v1/productos`)
               .then((res) => res.json())
               .then((data) => {
                 setData(data.data)
@@ -196,7 +196,7 @@ export default function CrearVisita({user}){
   
         
   
-        const resptiend =  await fetch(`http://${process.env.IP}:5000/api/v1/tienda/${tda}`)
+        const resptiend =  await fetch(`${process.env.IP}:5000/api/v1/tienda/${tda}`)
         const dtajson = await  resptiend.json()
         const crdta = dtajson.data
        
@@ -216,8 +216,8 @@ export default function CrearVisita({user}){
        
      console.log(dataPicking)
   
-        const respPicking = await axios.post(`http://${process.env.IP}:5000/api/v1/almacen/pedido/crear`,dataPicking)
-        const resp = await axios.post(`http://${process.env.IP}:5000/api/v1/promotor/crearV`,formData)
+        const respPicking = await axios.post(`${process.env.IP}:5000/api/v1/almacen/pedido/crear`,dataPicking)
+        const resp = await axios.post(`${process.env.IP}:5000/api/v1/promotor/crearV`,formData)
         console.log(respPicking)
         //Router.reload()
     

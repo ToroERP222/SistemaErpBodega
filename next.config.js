@@ -5,8 +5,8 @@ const nextConfig = {
 
 
 module.exports ={ env: {
-  IP: '54.218.70.39',
+  IP: 'https://toroerpbackend.onrender.com',
   images: {
-    domains: ['54.218.70.39'],
+    domains: ['toroerpbackend.onrender.com'],
   },
 },nextConfig }

@@ -15,7 +15,7 @@ export default function CrearLiquidacion({user}) {
     const [tienda, setTienda] = useState(null)
     const [submitted, setSubmitted] = useState(false);
     const getTiendas = async  () => {
-      const res = await fetch(`http://${process.env.IP}:5000/api/v1/tienda`)
+      const res = await fetch(`${process.env.IP}:5000/api/v1/tienda`)
       const data = await res.json()
       
        const crdta =  data.data
@@ -27,7 +27,7 @@ export default function CrearLiquidacion({user}) {
     const [cliente, setcliente] = useState([])
     
     const getClientsres = async  ()=> {
-     const res = await  fetch(`http://${process.env.IP}:5000/api/v1/cliente`)
+     const res = await  fetch(`${process.env.IP}:5000/api/v1/cliente`)
     const data = await res.json()
     setLoading(false)
       return setcliente(data.data)
@@ -64,7 +64,7 @@ export default function CrearLiquidacion({user}) {
         
           useEffect(() => {
             setLoading(true)
-            fetch(`http://${process.env.IP}:5000/api/v1/productos`)
+            fetch(`${process.env.IP}:5000/api/v1/productos`)
               .then((res) => res.json())
               .then((data) => {
                 setData(data.data)
@@ -136,7 +136,7 @@ export default function CrearLiquidacion({user}) {
             
         }
         console.log(data)
-        const resp = await axios.post(`http://${process.env.IP}:5000/api/v1/liquidacion/crear`,data)
+        const resp = await axios.post(`${process.env.IP}:5000/api/v1/liquidacion/crear`,data)
         console.log(resp)
         setSubmitted(true);
 

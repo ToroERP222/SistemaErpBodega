@@ -14,7 +14,7 @@ export default function Almacen() {
 
 const fetchptda = async (d) => {
   var result = [];
-const resp = await fetch(`http://${process.env.IP}:5000/api/v1/productos`)
+const resp = await fetch(`${process.env.IP}:5000/api/v1/productos`)
  const dtajson = await resp.json()
  const crdta = dtajson.data
  setprodlen(crdta.length)
@@ -31,12 +31,12 @@ var can = document.getElementById(`cantidad${p.nombre}`).value
 var data = {
   cantidadAlmacen: can
 }
-const res = await axios.put(`http://${process.env.IP}:5000/api/v1/productos/actualizarAlmacen/${p._id}`,data)
+const res = await axios.put(`${process.env.IP}:5000/api/v1/productos/actualizarAlmacen/${p._id}`,data)
 console.log(res)
 }
 const fetchdtaH= async () => {
   var result = [];
-  const resp = await fetch(`http://${process.env.IP}:5000/api/v1/almacen/pedido/`)
+  const resp = await fetch(`${process.env.IP}:5000/api/v1/almacen/pedido/`)
   const dtajson = await resp.json()
   const crdta = dtajson.data
   
@@ -91,7 +91,7 @@ const PedidoFabricante =  () => {
       productos:prod
     }
     console.log(data)
-    const resp = await axios.post(`http://${process.env.IP}:5000/api/v1/almacen/pedidoF/crear`,data)
+    const resp = await axios.post(`${process.env.IP}:5000/api/v1/almacen/pedidoF/crear`,data)
   }
   return(
     <>
@@ -150,7 +150,7 @@ let namesP = [{nombre:'',img:''}]
       'Content-Type': 'multipart/form-data'
     }
   };
-   const resp = await axios.post(`http://${process.env.IP}:5000/api/v1/almacen/estatusA/crear`,formData,config)
+   const resp = await axios.post(`${process.env.IP}:5000/api/v1/almacen/estatusA/crear`,formData,config)
    
      
   };

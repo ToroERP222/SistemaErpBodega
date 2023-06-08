@@ -33,7 +33,7 @@ export default function TiendaUser(user){
   const [cliente, setcliente] = useState([])
   const fetchptda = async (d) => {
       var result = [];
-    const resp = await fetch(`http://${process.env.IP}:5000/api/v1/tienda`)
+    const resp = await fetch(`${process.env.IP}:5000/api/v1/tienda`)
      const dtajson = await resp.json()
      const crdta = dtajson.data
      console.log(crdta)
@@ -41,7 +41,7 @@ export default function TiendaUser(user){
     }
     const fetchcl = async (d) => {
       var result = [];
-    const resp = await fetch(`http://${process.env.IP}:5000/api/v1/cliente`)
+    const resp = await fetch(`${process.env.IP}:5000/api/v1/cliente`)
      const dtajson = await resp.json()
      const crdta = dtajson.data
      console.log(crdta)
@@ -49,7 +49,7 @@ export default function TiendaUser(user){
     }
     const [users, setusers] = useState([{role:'',nombre:''}])
     const getuser = async () => {
-      const res = await fetch(`http://${process.env.IP}:5000/api/v1/auth/users`)
+      const res = await fetch(`${process.env.IP}:5000/api/v1/auth/users`)
       const dta = await res.json()
       const crdta = dta.data
      return setusers(crdta)
@@ -137,7 +137,7 @@ export default function TiendaUser(user){
     settienda(tienda);
   };
   const deleteTienda = async (tiendas) => {
-    const response = await axios.delete(`http://${process.env.IP}:5000/api/v1/tienda/eliminar/${tiendas._id}`)
+    const response = await axios.delete(`${process.env.IP}:5000/api/v1/tienda/eliminar/${tiendas._id}`)
    console.log(response)
   }
   const handleUpdateTienda = (e) => {
@@ -147,7 +147,7 @@ const empleadoE  = document.getElementById('empleadoE').value
 const empleadoP  = document.getElementById('empleadoP').value
 
    
-  fetch(`http://${process.env.IP}:5000/api/v1/tienda/${tienda._id}`, {
+  fetch(`${process.env.IP}:5000/api/v1/tienda/${tienda._id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -235,7 +235,7 @@ const handlesubmit = () => {
     
   }
   console.log(data)
-  axios.put(`http://${process.env.IP}:5000/api/v1/tienda/diaE/${ruta.id}`,data )
+  axios.put(`${process.env.IP}:5000/api/v1/tienda/diaE/${ruta.id}`,data )
   .then(res => {
     console.log(res);
   })
@@ -339,7 +339,7 @@ const handlesubmit = () => {
     
   }
   console.log(data)
-  axios.put(`http://${process.env.IP}:5000/api/v1/tienda/diaP/${ruta.id}`,data )
+  axios.put(`${process.env.IP}:5000/api/v1/tienda/diaP/${ruta.id}`,data )
   .then(res => {
     console.log(res);
   })
