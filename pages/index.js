@@ -14,11 +14,27 @@ import LayoutE from '../components/Layout/LayoutEmpleados';
 
 export default function Home({ data }) {
   const [user, setuser] = useState(null);
+ const getUser = async (token) => {
+  let url = `${process.env.IP}/api/v1/auth/me?token=${token}`;
+  
+  console.log(url);
+      const response = await fetch(url, {
+        method: 'GET',
+      });
 
+      if (!response.ok) {
+        throw new Error('Error fetching data');
+      }
+
+      const json = await response.json();
+
+      const jsondta = json.data;
+      console.log(jsondta)
+ }
   useEffect(() => {
     console.log(data);
     if(cookie.get('token')){
-      console.log(cookie.get('token'))
+      getUser(cookie.get('token'))
     }
     if (data[0] === undefined) {
       // Handle case where data is undefined
@@ -93,35 +109,39 @@ Home.getInitialProps = async ({ req }) => {
       token = tokenCookie.split('=')[1];
     }
     console.log(tokenCookie);
-  }
-
-  let url = `${process.env.IP}/api/v1/auth/me?token=${token}`;
-
-  console.log(url);
-
-  try {
-    if (token) { // Check if token is not null or empty
-      const response = await fetch(url, {
-        method: 'GET',
-      });
-
-      if (!response.ok) {
-        throw new Error('Error fetching data');
+    try {
+      if (token) { // Check if token is not null or empty
+        let url = `${process.env.IP}/api/v1/auth/me?token=${token}`;
+  
+    console.log(url);
+        const response = await fetch(url, {
+          method: 'GET',
+        });
+  
+        if (!response.ok) {
+          throw new Error('Error fetching data');
+        }
+  
+        const json = await response.json();
+  
+        const jsondta = json.data;
+        for (var i in jsondta) {
+          result.push(jsondta[i]);
+        }
       }
-
-      const json = await response.json();
-
-      const jsondta = json.data;
-      for (var i in jsondta) {
-        result.push(jsondta[i]);
-      }
+  
+      return { data: result };
+    } catch (error) {
+      console.log('Error:', error.message);
+      // Handle the error
+      return { data: result }; // Return an empty result or handle the error response
     }
-
-    return { data: result };
-  } catch (error) {
-    console.log('Error:', error.message);
-    // Handle the error
-    return { data: result }; // Return an empty result or handle the error response
+  }else{
+    return { data: result }
   }
+
+  
+
+  
 };
 
