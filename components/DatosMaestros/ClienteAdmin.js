@@ -7,41 +7,26 @@ import ReactPDF from 'react-to-pdf'
 import axios from 'axios'
 import Image from 'next/image'
 import Router from 'next/router'
-
+import useSWR from 'swr';
+const fetcherCliente = (url) => fetch(url).then((res) => res.json()); // SWR fetcher function for cliente API
+const fetcherProducts = (url) => axios.get(url).then((res) => res.data); // SWR fetcher function for productos API
 export default function ClienteAdmin(user) {
-    const [cli, setcli] = useState([])
-    const fetchptda = async (d) => {
-      const resp = await fetch(`${process.env.IP}/api/v1/cliente`)
-       const dtajson = await resp.json()
-       const crdta = dtajson.data
-       console.log()
-        return setcli(crdta);  
-      }
-      
-     useEffect(() => {
-       
-     fetchptda()
-       
-     }, [])
-     
-     const [editors, setEditors] = useState({
-      editor1: false,
-      editor2: false,
-      editor3: false,
-      editor4: false
-    });
-    const [activebutton, setActiveButton] = useState(false);
-    const [activeEdition, setactiveEdition] = useState(false)
-    const claveInput = useRef();
-    const canalInput = useRef();
-    const nombreClienteInput = useRef();
-    const razonSocialInput = useRef();
+
+  const { data: cli, error: cliError } = useSWR(`${process.env.IP}/api/v1/cliente`, fetcherCliente); // Use the SWR hook for cliente
+  const { data: products, error: productsError } = useSWR(`${process.env.IP}/api/v1/productos`, fetcherProducts); // Use the SWR hook for productos
+
   
-    function handleUpdate(editor) {
-      setEditors({ ...editors, [editor]: true });
-      setActiveButton(true);
-     
-    }
+    const [selectedClient, setSelectedClient] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [updatedValues, setUpdatedValues] = useState({
+      clave: '',
+      canal: '',
+      nombreCliente: '',
+      razonSocial: ''
+    });
+    const [updatedProducts, setUpdatedProducts] = useState([]);
+  
+  
     function checkEmptyInput(data) {
         const value = data
         if (value.trim() === '') {
@@ -53,100 +38,79 @@ export default function ClienteAdmin(user) {
         }
     }
     const [show, setShow] = useState(false);
-    const AlertInput = () => {
-        return(<>
-            <Alert variant="danger" show={show} onClose={() => setShow(false)} dismissible>
-            <Alert.Heading>Error</Alert.Heading>
-            <p>
-            Ingresa  todos los campos
-              
-            </p>
-          </Alert>
-            </>)
-    }
-    const updateClient = (e) => {
-       
-      var clv;
-      var cnl;
-      var nmbrClnt;
-      var rznScl;
-      clv = e.clave
-      cnl = e.canal
-      nmbrClnt = e.nombreCliente
-      rznScl = e.razonSocial
-      console.log(e)
-      if (editors.editor2) {
-        const value = document.getElementById(e.clave).value
-       if(checkEmptyInput(value) === true){
-            return setShow(true)
-       
-       }
-         clv = document.getElementById(e.clave).value
-         
-      } if(editors.editor){
-        const value2 = document.getElementById(e.canal).value
-        if(checkEmptyInput(value2) === true){
-           return setShow(true)
-        }
-         cnl = document.getElementById(value2).value
-       
-      } if(editors.editor3){
-        const value3 = document.getElementById(e.nombreCliente).value
-        console.log(value3)
-        if(checkEmptyInput(value3) === true){
-           return setShow(true)
-        }
-         nmbrClnt = document.getElementById(e.nombreCliente).value
-         
-      }if(editors.editor4){
-         
-         rznScl = document.getElementById(e.razonSocial).value
-      }
-      console.log(nmbrClnt)
-  
-      var data = {
-        clave: clv,
-        canal: cnl,
-       nombreCliente: nmbrClnt,
-       razonSocial: rznScl
-        
-      }
-      
-    
-      axios.put(`${process.env.IP}/api/v1/cliente/actualizar/${e._id}`,data )
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-
-
-      setEditors({
-        editor1: false,
-        editor2: false,
-        editor3: false,
-        editor4: false
-      })
-      
-        fetchptda()
-      
-        
-    
-      
-      
-    }
+   
     const [getcanal, setgetcanal] = useState(null)
     const [activeInfo, setactiveInfo] = useState(false)
+     const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUpdatedValues((prevValues) => ({ ...prevValues, [name]: value }));
+  };
+
+  const handleProductPriceChange = (index, e) => {
+    const { value } = e.target;
+    setUpdatedProducts((prevProducts) => {
+      const updated = [...prevProducts];
+      updated[index].precio = value;
+      return updated;
+    });
+  };
+
+  const handleEdit = (d) => {
+    setSelectedClient(d);
+    setUpdatedValues({
+      clave: d.clave,
+      canal: d.canal,
+      nombreCliente: d.nombreCliente,
+      razonSocial: d.razonSocial
+    });
+    setUpdatedProducts([...d.productos]);
+    setShowModal(true);
+  };
+
+  const handleUpdate = () => {
+    const updatedClient = {
+      ...selectedClient,
+      clave: updatedValues.clave,
+      canal: updatedValues.canal,
+      nombreCliente: updatedValues.nombreCliente,
+      razonSocial: updatedValues.razonSocial,
+      productos: updatedProducts
+    };
+
+    axios
+      .put(`${process.env.IP}/api/v1/cliente/actualizar/${updatedClient._id}`, updatedClient)
+      .then((res) => {
+        console.log(res);
+        setShowModal(false);
+        setSelectedClient(null);
+        setUpdatedValues({
+          clave: '',
+          canal: '',
+          nombreCliente: '',
+          razonSocial: ''
+        });
+        setUpdatedProducts([]);
+        fetchClients();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const handleEliminar = async (d) => {
+    try {
+      const res = await axios.delete(`${process.env.IP}/api/v1/cliente/eliminar/${d._id}`);
+      console.log(res);
+      fetchClients();
+    } catch (err) {
+      console.error(err);
+    }
+  };
     const handlecanal = (e) => {
 
       setgetcanal(e.target.value)
       setactiveInfo(true)
 
-    }
-    const handleEliminar = async (d) => {
-     const res = await axios.delete(`${process.env.IP}/api/v1/cliente/eliminar/${d._id}`)
-     console.log(res)
     }
   
       return(<>
@@ -161,56 +125,21 @@ export default function ClienteAdmin(user) {
 
         </Form.Group>
   {activeInfo && (<>
-    <div className='m-3'> 
-       {(!activeEdition) && (<> <td> <Button onClick={()=> setactiveEdition(true)}>Editar</Button></td></>)}
-       {(activeEdition) && (<><td> <Button onClick={()=> setactiveEdition(false)}>Regresar</Button></td></>)}
-       </div>
-        {(activeEdition) ? <div><Table striped bordered hover><thead>
+    <> <div><Table striped bordered hover><thead>
         <tr>  
           
           <th>Clave</th>
           <th>Canal</th>
           <th>Nombre Cliente</th>
           <th>Razon Social</th>
-  
+          {products.data.map(p => (<>
+          <th>{p.nombre}</th>
+          </>))}
+      
         </tr>
       </thead>
       <tbody>
-        {cli.map(d => {
-            return(
-          <>
-             {getcanal === d.canal && (<>
-              <tr key='1'>
-                        
-            <td onClick={()=>handleUpdate('editor2')}  key={d.clave}>{ (editors.editor2) ? <Form.Control  id={d.clave} placeholder={d.clave}/>  : <p  >{d.clave} </p>}</td>
-            <td onClick={()=>handleUpdate('editor1')}  key={d.canal}>{ (editors.editor1) ? <Form.Select  id={d.canal} ><option>Autoservicio</option><option>Horeca</option></Form.Select>  : <p  >{d.canal} </p>}</td>
-  
-            <td onClick={() => handleUpdate('editor3')}  key={d.canal}>{ (editors.editor3) ? <Form.Control  id={d.nombreCliente} placeholder={d.nombreCliente}/>  : <p  >{d.nombreCliente} </p>}</td>
-            <td onClick={()=>handleUpdate('editor4')}  key={d.canal}>{ (editors.editor4) ? <Form.Control  id={d.razonSocial} placeholder={d.razonSocial} />  : <p  >{d.razonSocial} </p>}</td>
-  
-              
-          {(activebutton) ? <><td><Button  variant="outline-primary" onClick={()  => updateClient(d)}>Actualizar</Button> </td></>:  ""}
-          <td><Button variant='danger' onClick={() =>handleEliminar(d)}>Eliminar</Button></td>
-          </tr>
-             </>)}
-        
-          </>
-        )
-      })}
-        </tbody>
-        </Table>
-        </div> :<> <div><Table striped bordered hover><thead>
-        <tr>  
-          
-          <th>Clave</th>
-          <th>Canal</th>
-          <th>Nombre Cliente</th>
-          <th>Razon Social</th>
-  
-        </tr>
-      </thead>
-      <tbody>
-        {cli.map(d => {
+        {cli.data.map(d => {
             return(
           <>
           {getcanal === d.canal && (
@@ -218,13 +147,28 @@ export default function ClienteAdmin(user) {
              <tr key='1'>
                         
                         <td >  <p  >{d.clave} </p></td>
-                        <td key={d.canal}> <p  >{d.canal} </p></td>
-              
-                        <td   key={d.canal}><p  >{d.nombreCliente} </p></td>
-                        <td key={d.canal}> <p  >{d.razonSocial} </p></td>
-              
-                          
+                        <td key={d.canal}> <p >{d.canal} </p></td>              
+                        <td key={d.canal}><p >{d.nombreCliente} </p></td>
+                        <td key={d.canal}> <p >{d.razonSocial} </p></td>   
+                        {d.productos.map(p => (<>
+                      {p.precio && (<>
+                      {products.data.map(prod => (<>
+                      {p.nombre === prod.nombre && (<>
+                        <td>${p.precio}</td>
+                      </>)}
+                      </>))}
                        
+                      </>)}
+                        </>))} 
+ <td>
+                <Button variant="primary" onClick={() => handleEdit(d)}>
+                  Editar
+                </Button>{' '}
+                
+              </td>
+              <td><Button variant="danger" onClick={() => handleEliminar(d)}>
+                  Eliminar
+                </Button></td>
                       </tr>
             </>
           )}
@@ -235,12 +179,77 @@ export default function ClienteAdmin(user) {
       })}
         </tbody>
         </Table>
-        </div></>}
+        </div></>
+      
   </>)}
       
       
        </Form>
        
-    <AlertInput/>
+       <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton className='bg-dark text-white'>
+          <Modal.Title>{updatedValues.nombreCliente}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group>
+              <Form.Label>Clave</Form.Label>
+              <Form.Control
+                type="text"
+                name="clave"
+                value={updatedValues.clave}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Canal</Form.Label>
+              <Form.Control
+                type="text"
+                name="canal"
+                value={updatedValues.canal}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Nombre Cliente</Form.Label>
+              <Form.Control
+                type="text"
+                name="nombreCliente"
+                value={updatedValues.nombreCliente}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Razon Social</Form.Label>
+              <Form.Control
+                type="text"
+                name="razonSocial"
+                value={updatedValues.razonSocial}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+
+            <h4>Products:</h4>
+            {updatedProducts.map((product, index) => (
+              <Form.Group key={product._id}>
+                <Form.Label>{product.nombre}</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={product.precio}
+                  onChange={(e) => handleProductPriceChange(index, e)}
+                />
+              </Form.Group>
+            ))}
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleUpdate}>
+            actualizar
+          </Button>
+        </Modal.Footer>
+      </Modal>
       </>)
   }
