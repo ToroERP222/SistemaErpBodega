@@ -534,7 +534,7 @@ const fetchdta = async (d) => {
   }
 const fetchdtaP = async (d) => {
     var result = [];
-    const resp = await fetch(`${process.env.IP}/api/v1/liquidacion/unica/${d}`)
+    const resp = await fetch(`${process.env.IP}/api/v1/liquidacion/`)
     const dtajson = await resp.json()
     const crdta = dtajson.data
 
@@ -554,15 +554,14 @@ const fetchptda = async (d) => {
    
    
   }
-const handlesbmt = async (e) => {
-    e.preventDefault()  
-    var fechaRemision=  document.getElementById(`fechaRemision`).value
-    fetchdtaP(fechaRemision)
+  useEffect(() => {
+    fetchdtaP()
     fetchdta()
     fetchptda()
     setOn(true)
-     
-  }
+  }, [])
+  
+
 const Accor = () => {
   return( <>
    <div>
@@ -653,22 +652,12 @@ const Accor = () => {
 
 
 
-  <Form onSubmit={handlesbmt} >
-  <Form.Group className="mb-3">
-     <Form.Label className='text-dark' >Fecha</Form.Label>
-     <Form.Control type="date" placeholder="Fecha" id='fechaRemision'/>
-     <Form.Text className="text-muted">
-        Fecha Liquidacion
-      </Form.Text>
-   </Form.Group>
+
  {On && (
    <><Accor/></>
  )}
 
-    <div className='text-center mt-2'><Button variant="dark" type="submit" className='text-center text-danger' size='lg'>
-     Consultar
-    </Button></div>
-   </Form>
+    
    
   </>)
 }
