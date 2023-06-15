@@ -241,11 +241,10 @@ export default function ClienteAdmin(user) {
               </Form.Group>
             ))}
           </Form>
-        </Modal.Body>
+        </Modal.Body> 
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Cancelar
-          </Button>
+            Cancelar          </Button>
           <Button variant="primary" onClick={handleUpdate}>
             actualizar
           </Button>
