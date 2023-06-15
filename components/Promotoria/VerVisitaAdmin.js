@@ -36,7 +36,7 @@ export default function VerVisitaAdmin({user})  {
     fetchdta()
   
   }, [])
-const deletevisita = (id) => {
+const deletevisita = async (id) => {
   const resp = await axios.delete(`${process.env.IP}/api/v1/promotor/visita/${id}`)
   if(resp){
     alert('visita elminada')
