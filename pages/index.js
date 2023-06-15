@@ -25,7 +25,13 @@ export default function Home({  }) {
       });
 
      
-
+      if (response.status === 401) {
+        // Handle 401 response
+        console.log('Unauthorized');
+        cookie.remove('token')
+        // Perform necessary actions, such as redirecting to login page or displaying an error message
+        return ;
+      }
       const json = await response.json();
 
       const jsondta = json.data;
@@ -107,49 +113,4 @@ export default function Home({  }) {
   );
 }
 
-Home.getInitialProps = async ({ req }) => {
-  const result = [];
-  let token = null;
-  if (req && req.headers && req.headers.cookie) {
-    const cookies = req.headers.cookie.split(';');
-    const tokenCookie = cookies.find((cookie) => cookie.trim().startsWith('token'));
-    if (tokenCookie) {
-      token = tokenCookie.split('=')[1];
-    }
-    console.log(tokenCookie);
-    try {
-      if (token) { // Check if token is not null or empty
-        let url = `${process.env.IP}/api/v1/auth/me?token=${token}`;
-  
-    console.log(url);
-        const response = await fetch(url, {
-          method: 'GET',
-        });
-  
-        if (!response.ok) {
-          throw new Error('Error fetching data');
-        }
-  
-        const json = await response.json();
-  
-        const jsondta = json.data;
-        for (var i in jsondta) {
-          result.push(jsondta[i]);
-        }
-      }
-  
-      return { data: result };
-    } catch (error) {
-      console.log('Error:', error.message);
-      // Handle the error
-      return { data: result }; // Return an empty result or handle the error response
-    }
-  }else{
-    return { data: result }
-  }
-
-  
-
-  
-};
 
