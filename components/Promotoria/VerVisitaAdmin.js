@@ -36,7 +36,14 @@ export default function VerVisitaAdmin({user})  {
     fetchdta()
   
   }, [])
+const deletevisita = (id) => {
+  const resp = await axios.delete(`${process.env.IP}/api/v1/promotor/visita/${id}`)
+  if(resp){
+    alert('visita elminada')
+    
 
+  }
+}
   const updVisita = async (e) => {
    let est =  document.getElementById(`estatus`).value
   
@@ -120,6 +127,7 @@ export default function VerVisitaAdmin({user})  {
         </Form>
         </td>
         <td><a href={d.img} download> Descargar</a></td>
+        <td><Button variant='danger' onClick={() => deletevisita(d._id)}>Eliminar</Button></td>
         </tr> 
     )
   })}
