@@ -1,6 +1,6 @@
 import React,{useState,useEffect,useRef} from 'react'
 import Navb from '../Navb'
-import {Container,ListGroup,Row,Col,Modal,Button,Form,Table,Stack,Tab,Accordion} from 'react-bootstrap'
+import {Container,ListGroup,Row,Col,Modal,Button,Form,Table,Stack,Tab,Accordion,Spinner} from 'react-bootstrap'
 import lodash from 'lodash'
 import Pdf from '../TestComponents/Pdf'
 import ReactPDF from 'react-to-pdf'
@@ -128,6 +128,10 @@ export default function CrearVisita({user}){
       }
       const [image, setimage] = useState(null)
       const [imageA, setimageA] = useState(false)
+      const [loading, setloading] = useState(false)
+      const [added, setadded] = useState(false)
+      const [info, setinfo] = useState([])
+
       const  imagesmbt = (e) => {
         console.log(e.target.files)
         setimage(e.target.files[0])
@@ -135,6 +139,7 @@ export default function CrearVisita({user}){
       }
       const handleSubmit = async (e) => {
         console.log(prdlen)
+        setloading(true)
         let prod =[]
         var prodPicking = []
         // Stop the form from submitting and refreshing the page.
@@ -221,7 +226,11 @@ export default function CrearVisita({user}){
         console.log(respPicking)
         //Router.reload()
     
+         if(resp){
           setSubmitted(true);
+          setadded(true)
+          setinfo(data)
+         }
 
     
       }
@@ -229,10 +238,82 @@ export default function CrearVisita({user}){
   const handlecanal = (e) => {
     setcanal(e.target.value)
   }  
+  const clearHandlers = () =>{
+
+    setadded(false)
+    setloading(false)
+    setinfo([])
+  }
     return (
       <>
     
-  <Container>
+   
+  {added ? <>
+    <Accordion>
+      <Accordion.Item   eventKey="0">
+        <Accordion.Header><Table striped bordered hover><thead>
+        <tr>
+ 
+      <th>Piezas en Existencia</th>
+      
+      <th>Piezas en proceso de cambio</th>
+      <th>Piezas Pedidas</th>
+     
+      
+      
+ 
+    </tr>
+    <tr>
+    <td> {info.totalP}</td>
+    <td> {info.bajasG}</td>
+    <td> {info.altasG}</td>
+    </tr>
+  </thead>
+  </Table> 
+  </Accordion.Header>
+        <Accordion.Body>
+        <Table striped bordered hover>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Pedido</th>
+      <th>Cambios</th>
+      <th>Existencia</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+  {info.productos.map(i => (<>
+    <tr>
+   <td>{i.nombre}</td>
+   <td>{i.alta}</td>
+   <td>{i.bajas}</td>
+   <td>{i.existencia}</td>
+      </tr>
+
+     
+  </>))}
+  
+  
+     
+   
+   
+  </tbody>
+</Table>
+        </Accordion.Body>
+      </Accordion.Item>
+      
+    </Accordion>
+  {console.log(info)}
+  
+<Button onClick={clearHandlers} className='mx-3 my-3'>Agregar Nueva Visita</Button>
+  </> : <>
+    {loading ?<>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Spinner animation="grow"  variant='danger'/>
+    </div>
+   </> : <>
+    <Container>
   
         
   <h1 className='text-dark text-center'>Datos</h1>
@@ -319,7 +400,9 @@ export default function CrearVisita({user}){
     </>)}
   
   </Container>
-      
+   </>}
+  </>}
+
       </>
     )
   }
