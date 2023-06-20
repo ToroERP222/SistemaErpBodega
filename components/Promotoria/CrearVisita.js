@@ -12,12 +12,22 @@ export default function CrearVisita({user}){
     const [prdlen, setPrdlen] = useState(0)
     const [diaP, setdiaP] = useState(0)
     const [diaE, setdiaE] = useState(0)
+    const [activecomponents, setactivecomponents] = useState(false)
       const [submitted, setSubmitted] = useState(false);
+      const getVisitas =  async () => {
+        const resp = await axios.get(`${process.env.IP}/api/v1/productos`)
+        if(res){
+          setactivecomponents(true)
+        }
+        
+      }
       useEffect(() => {
     if (submitted) {
       alert('Informacion Agregada');
       setSubmitted(false);
     }
+    getVisitas()
+
   }, [submitted]);
       const Rtienda = () => {
         const [isLoading, setLoading] = useState(false)
@@ -245,164 +255,170 @@ export default function CrearVisita({user}){
     setinfo([])
   }
     return (
-      <>
+     <>
+     {activecomponents ?  <>
     
    
-  {added ? <>
-    <Accordion>
-      <Accordion.Item   eventKey="0">
-        <Accordion.Header><Table striped bordered hover><thead>
-        <tr>
- 
-      <th>Piezas en Existencia</th>
-      
-      <th>Piezas en proceso de cambio</th>
-      <th>Piezas Pedidas</th>
-     
-      
-      
- 
-    </tr>
-    <tr>
-    <td> {info.totalP}</td>
-    <td> {info.bajasG}</td>
-    <td> {info.altasG}</td>
-    </tr>
-  </thead>
-  </Table> 
-  </Accordion.Header>
-        <Accordion.Body>
-        <Table striped bordered hover>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Pedido</th>
-      <th>Cambios</th>
-      <th>Existencia</th>
-    </tr>
-  </thead>
-  <tbody>
-    
-  {info.productos.map(i => (<>
-    <tr>
-   <td>{i.nombre}</td>
-   <td>{i.alta}</td>
-   <td>{i.bajas}</td>
-   <td>{i.existencia}</td>
+    {added ? <>
+      <Accordion>
+        <Accordion.Item   eventKey="0">
+          <Accordion.Header><Table striped bordered hover><thead>
+          <tr>
+   
+        <th>Piezas en Existencia</th>
+        
+        <th>Piezas en proceso de cambio</th>
+        <th>Piezas Pedidas</th>
+       
+        
+        
+   
       </tr>
-
-     
-  </>))}
-  
-  
-     
-   
-   
-  </tbody>
-</Table>
-        </Accordion.Body>
-      </Accordion.Item>
+      <tr>
+      <td> {info.totalP}</td>
+      <td> {info.bajasG}</td>
+      <td> {info.altasG}</td>
+      </tr>
+    </thead>
+    </Table> 
+    </Accordion.Header>
+          <Accordion.Body>
+          <Table striped bordered hover>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Pedido</th>
+        <th>Cambios</th>
+        <th>Existencia</th>
+      </tr>
+    </thead>
+    <tbody>
       
-    </Accordion>
-  {console.log(info)}
+    {info.productos.map(i => (<>
+      <tr>
+     <td>{i.nombre}</td>
+     <td>{i.alta}</td>
+     <td>{i.bajas}</td>
+     <td>{i.existencia}</td>
+        </tr>
   
-<Button onClick={clearHandlers} className='mx-3 my-3'>Agregar Nueva Visita</Button>
-  </> : <>
-    {loading ?<>
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <Spinner animation="grow"  variant='danger'/>
-    </div>
-   </> : <>
-    <Container>
-  
+       
+    </>))}
+    
+    
+       
+     
+     
+    </tbody>
+  </Table>
+          </Accordion.Body>
+        </Accordion.Item>
         
-  <h1 className='text-dark text-center'>Datos</h1>
-      <Form.Group className="mb-3"  >
-        <Form.Label  className='text-dark'>Canal</Form.Label>
-        <Form.Select name='canal' onChange={handlecanal}>
-        <option>-</option>
-            <option>Autoservicio</option>
-            <option>HORECA</option>
+      </Accordion>
+    {console.log(info)}
+    
+  <Button onClick={clearHandlers} className='mx-3 my-3'>Agregar Nueva Visita</Button>
+    </> : <>
+      {loading ?<>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Spinner animation="grow"  variant='danger'/>
+      </div>
+     </> : <>
+      <Container>
+    
           
-          </Form.Select>
-  
+    <h1 className='text-dark text-center'>Datos</h1>
+        <Form.Group className="mb-3"  >
+          <Form.Label  className='text-dark'>Canal</Form.Label>
+          <Form.Select name='canal' onChange={handlecanal}>
+          <option>-</option>
+              <option>Autoservicio</option>
+              <option>HORECA</option>
+            
+            </Form.Select>
+    
+          
+          <Form.Text className="text-muted">
+              Canal de venta 
+          </Form.Text>
+        </Form.Group>
+      
+      {canal && (<>
+      
+      
+        <Row>
+        <Col>
+        <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="formFileSm" className="mb-3">
+            <Form.Label className='text-dark'>Imagen</Form.Label>
+            <Form.Control type="file" size="sm" name='img' onChange={imagesmbt}/>
+          </Form.Group>
+          {imageA && (<>
+            <Rtienda/>
         
+        <Form.Group className="mb-3" >
+        <Form.Label className='text-dark' >Nombre Promotor</Form.Label>
+        <Form.Control value={user}   name='nombreP'/>
         <Form.Text className="text-muted">
-            Canal de venta 
+          
         </Form.Text>
       </Form.Group>
-    
-    {canal && (<>
-    
-    
-      <Row>
-      <Col>
-      <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="formFileSm" className="mb-3">
-          <Form.Label className='text-dark'>Imagen</Form.Label>
-          <Form.Control type="file" size="sm" name='img' onChange={imagesmbt}/>
-        </Form.Group>
-        {imageA && (<>
-          <Rtienda/>
-      
-      <Form.Group className="mb-3" >
-      <Form.Label className='text-dark' >Nombre Promotor</Form.Label>
-      <Form.Control value={user}   name='nombreP'/>
-      <Form.Text className="text-muted">
         
-      </Form.Text>
-    </Form.Group>
-      
-      <Form.Group className="mb-3">
-          <Form.Label className='text-dark' >Fecha</Form.Label>
-          <Form.Control type="date" placeholder="Fecha" name='fecha'/>
-          <Form.Text className="text-muted">
-            Fecha Visita
-            </Form.Text>
+        <Form.Group className="mb-3">
+            <Form.Label className='text-dark' >Fecha</Form.Label>
+            <Form.Control type="date" placeholder="Fecha" name='fecha'/>
+            <Form.Text className="text-muted">
+              Fecha Visita
+              </Form.Text>
+          </Form.Group>
+          <Form.Group className="mb-3" >
+          <Form.Label className='text-dark'>Observaciones</Form.Label>
+          <Form.Control type="Text" placeholder="Observaciones" name='observaciones'/>
+          <Form.Text>Observaciones</Form.Text>
+  
         </Form.Group>
         <Form.Group className="mb-3" >
-        <Form.Label className='text-dark'>Observaciones</Form.Label>
-        <Form.Control type="Text" placeholder="Observaciones" name='observaciones'/>
-        <Form.Text>Observaciones</Form.Text>
-
-      </Form.Group>
-      <Form.Group className="mb-3" >
-                <Form.Label className='text-dark'>Rotacion</Form.Label>
-                <Form.Select  name='rotacion' >
-                  <option name='canal'>0%</option>
-                  <option name='canal'>10%</option>
-                  <option name='canal'>20%</option>
-                  <option name='canal'>30%</option>
-                  <option name='canal'>40%</option>
-                  <option name='canal'>50%</option>
-                  <option name='canal'>60%</option>
-                  <option name='canal'>70%</option>
-                  <option name='canal'>80%</option>
-                  <option name='canal'>90%</option>
-                  <option name='canal'>100%</option>
-                </Form.Select>
-
-                </Form.Group>
-               
-      <h2 className='text-dark text-center'>Productos</h2>
-      <Render/>
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
-        </>)}
+                  <Form.Label className='text-dark'>Rotacion</Form.Label>
+                  <Form.Select  name='rotacion' >
+                    <option name='canal'>0%</option>
+                    <option name='canal'>10%</option>
+                    <option name='canal'>20%</option>
+                    <option name='canal'>30%</option>
+                    <option name='canal'>40%</option>
+                    <option name='canal'>50%</option>
+                    <option name='canal'>60%</option>
+                    <option name='canal'>70%</option>
+                    <option name='canal'>80%</option>
+                    <option name='canal'>90%</option>
+                    <option name='canal'>100%</option>
+                  </Form.Select>
+  
+                  </Form.Group>
+                 
+        <h2 className='text-dark text-center'>Productos</h2>
+        <Render/>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+          </>)}
+         
+        </Form>
+        
+        </Col>
+    
        
-      </Form>
-      
-      </Col>
+      </Row>
+      </>)}
+    
+    </Container>
+     </>}
+    </>}
   
-     
-    </Row>
-    </>)}
-  
-  </Container>
-   </>}
-  </>}
-
-      </>
+        </> : <>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Spinner animation="grow"  variant='danger'/>
+      </div>
+        </> }
+     </>
     )
   }
