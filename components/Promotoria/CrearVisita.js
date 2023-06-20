@@ -16,10 +16,10 @@ export default function CrearVisita({user}){
       const [submitted, setSubmitted] = useState(false);
       const getVisitas =  async () => {
         const resp = await axios.get(`${process.env.IP}/api/v1/productos`)
-        if(res){
+        if(resp){
           setactivecomponents(true)
         }
-        
+         
       }
       useEffect(() => {
     if (submitted) {
