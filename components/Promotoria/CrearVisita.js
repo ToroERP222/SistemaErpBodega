@@ -230,9 +230,9 @@ export default function CrearVisita({user}){
         }
        
      console.log(dataPicking)
-  
+     const resp = await axios.post(`${process.env.IP}/api/v1/promotor/crearV`,formData)
         const respPicking = await axios.post(`${process.env.IP}/api/v1/almacen/pedido/crear`,dataPicking)
-        const resp = await axios.post(`${process.env.IP}/api/v1/promotor/crearV`,formData)
+       
         console.log(respPicking)
         //Router.reload()
     
