@@ -8,11 +8,13 @@ import Navb from './Navb';
 export default function Login() {
   const [loginError, setLoginError] = useState('');
   const [clave, setClave] = useState('');
+  const [loading, setloading] = useState(false);
   const [password, setPassword] = useState('');
 
   function handleSubmit(e) {
     e.preventDefault();
     //call api
+    setloading(true)
     fetch(`${process.env.IP}/api/v1/auth/login`, {
       method: 'POST',
       headers: {
@@ -40,7 +42,13 @@ export default function Login() {
       });
   }
   return (
-    <>
+   <>
+   {loading ? <>
+   
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Spinner animation="grow"  variant='danger'/>
+      </div>
+   </>: <>
     
     <Container>
       <Row>
@@ -69,6 +77,7 @@ export default function Login() {
       </Col>
     </Row>
     </Container>
-    </>
+    </>}
+   </>
   );
 }
