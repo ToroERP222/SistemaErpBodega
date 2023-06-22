@@ -79,6 +79,8 @@ export default function Home({  }) {
   }
 
   return (
+    <>
+   {data ? <>
     <div
       style={{
         height: '100vh',
@@ -110,6 +112,10 @@ export default function Home({  }) {
         )}
       </div>
     </div>
+   </> : <>
+   <Login/>
+   </>}
+   </>
   );
 }
 
