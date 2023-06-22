@@ -2,7 +2,7 @@
 import React, {useState} from 'react';
 import Router from 'next/router';
 import cookie from 'js-cookie';
-import {Container,Row,Col, Form,Button} from 'react-bootstrap'
+import {Container,Row,Col, Form,Button,Spinner} from 'react-bootstrap'
 import Navb from './Navb';
 
 export default function Login() {
