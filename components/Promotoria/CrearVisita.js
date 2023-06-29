@@ -179,7 +179,7 @@ export default function CrearVisita({user}){
           return parseInt(o.existencia)
         })
   
-        
+        console.log(existenciaF)
         // Get data from the form.
         const data = {
             nombreTienda:e.target.nombreTienda.value,
