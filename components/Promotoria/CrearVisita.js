@@ -197,7 +197,7 @@ export default function CrearVisita({user}){
         
         var tda = e.target.TDA.value
         const formData = new FormData()
-        formData.append('img', image)
+        //formData.append('img', image)
         formData.append('nombreTienda', data.nombreTienda)
         formData.append('TDA', data.TDA)
         formData.append('promotor', data.promotor)
