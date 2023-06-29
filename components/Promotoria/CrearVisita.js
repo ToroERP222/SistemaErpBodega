@@ -349,11 +349,8 @@ export default function CrearVisita({user}){
         <Row>
         <Col>
         <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formFileSm" className="mb-3">
-            <Form.Label className='text-dark'>Imagen</Form.Label>
-            <Form.Control type="file" size="sm" name='img' onChange={imagesmbt}/>
-          </Form.Group>
-          {imageA && (<>
+        
+         <>
             <Rtienda/>
         
         <Form.Group className="mb-3" >
@@ -400,7 +397,7 @@ export default function CrearVisita({user}){
         <Button variant="primary" type="submit">
           Submit
         </Button>
-          </>)}
+          </>
          
         </Form>
         
