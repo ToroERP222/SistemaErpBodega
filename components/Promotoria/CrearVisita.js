@@ -351,7 +351,7 @@ export default function CrearVisita({user}){
         <Form onSubmit={handleSubmit}>
         
          <>
-            <Rtienda/>
+            <Rtienda/>    
         
         <Form.Group className="mb-3" >
         <Form.Label className='text-dark' >Nombre Promotor</Form.Label>
