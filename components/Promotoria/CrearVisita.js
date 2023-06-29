@@ -123,9 +123,9 @@ export default function CrearVisita({user}){
                          <Form.Group className="mb-3">
                               <Form.Label className='text-dark' id= {`prodn${count}`}>{d.nombre}</Form.Label>
                             
-                              <Form.Control type="Number" placeholder='Pedido' id={`altaP${count}`} />
-                              <Form.Control type="Number" placeholder='Bajas' id={`bajaP${count}`}/>
-                              <Form.Control type="Number" placeholder='Existencia' id={`existenciaP${count}`} />
+                              <Form.Control type="number" placeholder='Pedido' id={`altaP${count}`} />
+                              <Form.Control type="number" placeholder='Bajas' id={`bajaP${count}`}/>
+                              <Form.Control type="number" placeholder='Existencia' id={`existenciaP${count}`} />
                         </Form.Group>
   
                          {count= count+1}
