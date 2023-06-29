@@ -51,7 +51,7 @@ export default function Home() {
     if (token && data[0] === undefined) {
       getUser(token);
     } else {
-      setuser(data[0].nombre);
+      setUser(data[0].nombre);
     }
   }, [data]);
 
