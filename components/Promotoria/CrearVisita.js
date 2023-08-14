@@ -155,17 +155,10 @@ export default function CrearVisita({user}){
         var prodPicking = []
         // Stop the form from submitting and refreshing the page.
         e.preventDefault()
-        
         for (let index = 1; index <= prdlen; index++) {
-       
           var value = document.getElementById(`prodn${index}`).innerHTML
-        
-          
-          
           prodPicking.push({nombre:value,cantidad:parseInt(document.getElementById(`altaP${index}`).value)})
-  
           prod.push({nombre:value, bajas:parseInt(document.getElementById(`bajaP${index}`).value),alta:parseInt(document.getElementById(`altaP${index}`).value),existencia:parseInt(document.getElementById(`existenciaP${index}`).value)})
-          
         }
   
         let bajaN
@@ -209,17 +202,16 @@ export default function CrearVisita({user}){
         formData.append('totalP', data.totalP)
         formData.append('observaciones', data.observaciones)
         formData.append('rotacion', data.rotacion)
-  
-        
-  
+
         const resptiend =  await fetch(`${process.env.IP}/api/v1/tienda/${tda}`)
+        
         const dtajson = await  resptiend.json()
+        
         const crdta = dtajson.data
-       
+        
         console.log(formData)
         console.log(crdta[0].diaE)
         const dataPicking = {
-          
           TDA:e.target.TDA.value,
           fecha: crdta[0].diaE,
           empleado:crdta[0].empleadoEntrega,
@@ -231,8 +223,10 @@ export default function CrearVisita({user}){
         }
        
      console.log(dataPicking)
-     const resp = await axios.post(`${process.env.IP}/api/v1/promotor/crearV`,formData)
-        const respPicking = await axios.post(`${process.env.IP}/api/v1/almacen/pedido/crear`,dataPicking)
+        const resp = await axios.post(`${process.env.IP}/api/v1/promotor/crearV`,formData)
+        if(data.totalP>0){
+          const respPicking = await axios.post(`${process.env.IP}/api/v1/almacen/pedido/crear`,dataPicking)
+        }
        
         console.log(respPicking)
         //Router.reload()
