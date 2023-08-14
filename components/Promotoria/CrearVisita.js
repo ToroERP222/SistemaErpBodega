@@ -76,6 +76,7 @@ export default function CrearVisita({user}){
                         <Form.Select name ='TDA' onChange={() => onch()}  >
                     {tienda.map((t) => {
                       if (t.nombreTienda === nomTienda){
+                        console.log(t.TDA)
                         return(<option key={t.TDA}  >{t.TDA}</option>)
                       }
                      
