@@ -224,7 +224,7 @@ export default function CrearVisita({user}){
        
      console.log(dataPicking)
         const resp = await axios.post(`${process.env.IP}/api/v1/promotor/crearV`,formData)
-        if(data.totalP>0){
+        if(data.totalP>0 || dataPicking.totalPedido>0){
           const respPicking = await axios.post(`${process.env.IP}/api/v1/almacen/pedido/crear`,dataPicking)
         }
        
